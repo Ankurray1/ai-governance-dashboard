@@ -148,3 +148,73 @@ Phase 3: Deep Security & Video/Voice APIs (Days 15–21)
   ├── 2. Connect Synthesia, Runway, and ElevenLabs consumption webhooks.
   └── 3. Configure Midjourney seat counts in Admin Settings.
 ```
+
+
+---
+
+## Part 3: Pick Your Three Charts
+
+### Executive Framing: The Jobs-to-be-Done
+When constrained to just **three visualizations** on an executive dashboard, every square pixel must drive an operational business decision. 
+
+A non-technical executive (CFO or IT/Security Lead) does not need vanity metrics. They evaluate AI through three specific lenses:
+1. **Fiscal Trajectory:** *Are we on track to stay within our enterprise limits, or are we heading toward month-end bill shock?*
+2. **Accountability & Ownership:** *Which specific departments are over budget, and who owns the remediation?*
+3. **Control vs. Defection:** *Are employees actually adopting our sanctioned investments, or are they leaking company data into unvetted Shadow AI tools?*
+
+Here are the three charts I would choose, why they made the cut, and what I deliberately eliminated.
+
+---
+
+### Chart 1: Enterprise Spend Runway & Cost Composition Meter
+* **Visual Representation:** Dual-progress bullet bar with actual MTD spend, forecasted month-end run rate, and a 100% budget threshold marker, backed by a cost-composition breakdown.
+* **Metric Displayed:** Spent **$97,100** of **$105,000** budget (92% consumed on Day 20 of 30) · Split: **$92,300 Fixed Licenses** vs. **$4,800 Pay-per-use Consumption**.
+* **Why This Chart (Senior PM Rationale):**
+  * **Solves the "Hybrid SaaS" Problem:** Traditional SaaS software was purely seat-based (e.g. $40/user/month). AI software is fundamentally hybrid—seat licenses plus volatile, usage-based token consumption (video minutes, voice synthesis, API tokens). Without separating fixed commitments from consumption spikes, a CFO cannot diagnose *why* a budget is burning too fast.
+  * **Pacing & Early Warning:** Comparing 92% budget consumption against a 66% calendar elapsed time (Day 20 of 30) gives the CFO an immediate, non-technical pacing signal to freeze variable consumption caps before an overdraft occurs.
+
+---
+
+### Chart 2: Department Spend vs. Budget Benchmark (With Cost-Center Owners)
+* **Visual Representation:** Horizontal comparative benchmark bar chart sorted by risk severity (*Over Limit* > *Near Limit* > *On Track*), plotting actual spend vs. projected month-end against each department's 100% budget cap line.
+* **Metric Displayed:**
+  * Engineering: **$26,100 / $25,000** (Over limit · 104%) — Owner: *VP Engineering*
+  * Marketing: **$21,225 / $18,000** (Over limit · 118%) — Owner: *Head of Marketing*
+  * Sales: **$19,375 / $22,000** (Near limit · 88%) — Owner: *VP Sales*
+  * Support, Product & Design, Finance & Ops, HR (On Track).
+* **Why This Chart (Senior PM Rationale):**
+  * **Decentralized Accountability:** Company-level aggregates are inactionable. A CFO cannot "cut company spend" in the abstract; they must hold department leaders accountable.
+  * **Actionability in Week 1:** Attributing spend directly to named executives (*VP Engineering*, *Head of Marketing*) transforms passive data into an immediate operational workflow: the CFO knows exactly whose door to knock on to pause hiring or reallocate discretionary AI budget.
+  * **Lead Metric vs. Lag Metric:** Plotting *Spent so far* (dark bar) next to *Expected month-end* (light bar) allows proactive remediation before the invoice arrives.
+
+---
+
+### Chart 3: Tool Adoption Matrix: Approved Utility vs. Shadow AI Defection
+* **Visual Representation:** Ranked utilization bar chart comparing active user headcount across Approved Enterprise Tools against detected Unapproved Tools (Shadow AI), highlighted with discovery vectors.
+* **Metric Displayed:**
+  * Approved: **ChatGPT Enterprise** (712 people), **Microsoft 365 Copilot** (425 people), **Otter.ai** (276 people), **Claude Enterprise** (273 people).
+  * Unapproved ("Shadow AI"): **Perplexity** (76 people · work-email signup), **Fireflies.ai** (42 people · calendar bot access), **Claude Pro Personal** (21 people · expensed card claims).
+* **Why This Chart (Senior PM Rationale):**
+  * **Detects Shelfware vs. Defection:** If an enterprise spends $21,000/month on Microsoft Copilot (425 active users out of 700 bought seats) while 76 employees are using Perplexity and 42 are connecting Fireflies.ai meeting bots, the company suffers two simultaneous failures: **shelfware waste** (paying for unused seats) and **security vulnerability** (unvetted third-party data processing).
+  * **Bridge Between CFO and CISO:** This chart bridges the two primary personas. The CFO sees opportunities to consolidate duplicate spend (e.g. migrating personal expensed Claude Pro users to the enterprise agreement), while the IT/Security lead sees where policy compliance is failing.
+
+---
+
+### The PM "Kill List": What We Deliberately Cut & Why
+
+Senior product management is defined by what you choose *not* to build. Here is what was evaluated and intentionally omitted:
+
+1. **Vendor Market-Share Donut / Pie Chart:**
+   * *Why Cut:* Classic executive vanity visual. Showing that OpenAI represents 42% of spend and Microsoft represents 22% provides zero operational leverage. It doesn't tell leadership whether that spend is within budget, generating ROI, or creating security risk.
+2. **Raw Token / Prompt Volume Counters:**
+   * *Why Cut:* Low stakeholder relevance. CFOs and IT leads budget in dollars, seats, and headcount, not floating-point context window tokens or embedding API calls. Token metrics confuse non-technical executives and obscure business outcomes.
+3. **Daily Active User (DAU) Fluctuations:**
+   * *Why Cut:* Day-to-day noise. AI usage fluctuates wildly mid-week vs. weekends. Tracking a rolling 30-day active user metric against purchased seat licenses provides stable procurement signal without the distraction of daily volatility.
+
+---
+
+### Summary: The Complete Executive Loop
+Together, these three charts form a complete operational loop:
+1. **Chart 1 (Macro):** *"Are we going to breach our fiscal limits this month?"* → Yes, 92% consumed on Day 20.
+2. **Chart 2 (Micro/Attribution):** *"Who is causing the overage?"* → Marketing (118%) and Engineering (104%).
+3. **Chart 3 (Behavior/Governance):** *"Why are employees adopting or defecting?"* → High text/chat demand, with 174 users on unapproved tools that need to be redirected into approved enterprise licenses.
