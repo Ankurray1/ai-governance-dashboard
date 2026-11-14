@@ -162,7 +162,13 @@ A non-technical executive (CFO or IT/Security Lead) does not need vanity metrics
 2. **Accountability & Ownership:** *Which specific departments are over budget, and who owns the remediation?*
 3. **Control vs. Defection:** *Are employees actually adopting our sanctioned investments, or are they leaking company data into unvetted Shadow AI tools?*
 
-Here are the three charts I would choose, why they made the cut, and what I deliberately eliminated.
+### Quick Executive Summary: The 3 Core Metrics
+
+| Rank | Metric | Why this metric? |
+|:---:|---|---|
+| **1** | **Department Spend vs. Budget Limit**<br>*(with Cost-Center Owner)* | • Pinpoints exactly which teams are over budget (Marketing at 118%, Engineering at 104%)<br>• Assigns direct accountability to named leaders (VP Eng, Head of Mktg) for immediate action<br>• Uses month-end projections so the CFO can intervene before invoices arrive |
+| **2** | **Total AI Spend vs. Budget Ceiling**<br>*(Fixed Seats vs. Pay-per-Use Split)* | • Prevents month-end bill shock by tracking spend pacing against calendar days (92% on Day 20)<br>• Separates predictable seat costs ($92.3k) from volatile token/usage spikes ($4.8k)<br>• Gives an early trigger to freeze variable consumption caps before the $105k limit is breached |
+| **3** | **Active Tool Adoption: Approved vs. Unapproved**<br>*(Shadow AI)* | • Exposes unused licenses by identifying paid enterprise seats that remain idle<br>• Uncovers Shadow AI defection (174 staff using unvetted tools like Perplexity & Fireflies)<br>• Helps the CFO cut duplicate costs and helps IT stop data leaks |
 
 ---
 
