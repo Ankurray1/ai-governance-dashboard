@@ -1,0 +1,39 @@
+date,employee_id,department,tool,alert_type,status
+2026-11-20,ACM-11218,Sales,ChatGPT Enterprise,Customer personal data,Reviewed
+2026-11-20,ACM-11048,Sales,ChatGPT Enterprise,Customer personal data,Open
+2026-11-20,ACM-11448,Sales,Microsoft 365 Copilot,Customer personal data,Open
+2026-11-19,ACM-11850,Support,ChatGPT Enterprise,Customer personal data,Open
+2026-11-19,ACM-12142,Finance & Ops,Microsoft 365 Copilot,Financial data,Open
+2026-11-18,ACM-10997,Sales,Microsoft 365 Copilot,Customer personal data,Open
+2026-11-18,ACM-10572,Engineering,ChatGPT Enterprise,Passwords & access keys,Open
+2026-11-17,ACM-10484,Engineering,Claude Enterprise,Customer personal data,Reviewed
+2026-11-17,ACM-10720,Marketing,Claude Enterprise,Customer personal data,Open
+2026-11-16,ACM-12143,Finance & Ops,ChatGPT Enterprise,Financial data,Open
+2026-11-16,ACM-10519,Engineering,ChatGPT Enterprise,Passwords & access keys,Reviewed
+2026-11-15,ACM-10727,Marketing,Microsoft 365 Copilot,Customer personal data,Open
+2026-11-15,ACM-10525,Engineering,ChatGPT Enterprise,Passwords & access keys,Open
+2026-11-14,ACM-10257,Engineering,ChatGPT Enterprise,Passwords & access keys,Open
+2026-11-13,ACM-10739,Marketing,ChatGPT Enterprise,Customer personal data,Open
+2026-11-13,ACM-11807,Support,Microsoft 365 Copilot,Customer personal data,Open
+2026-11-11,ACM-11233,Sales,ChatGPT Enterprise,Customer personal data,Open
+2026-11-11,ACM-11144,Sales,Microsoft 365 Copilot,Customer personal data,Open
+2026-11-10,ACM-12270,Finance & Ops,Microsoft 365 Copilot,Financial data,Open
+2026-11-09,ACM-10893,Marketing,ChatGPT Enterprise,Customer personal data,Open
+2026-11-09,ACM-11130,Sales,Microsoft 365 Copilot,Customer personal data,Reviewed
+2026-11-09,ACM-11594,Support,Microsoft 365 Copilot,Customer personal data,Open
+2026-11-08,ACM-12381,HR,ChatGPT Enterprise,Financial data,Reviewed
+2026-11-07,ACM-11594,Support,Microsoft 365 Copilot,Customer personal data,Reviewed
+2026-11-07,ACM-10992,Sales,Microsoft 365 Copilot,Financial data,Reviewed
+2026-11-07,ACM-12167,Finance & Ops,Microsoft 365 Copilot,Financial data,Reviewed
+2026-11-06,ACM-10847,Marketing,ChatGPT Enterprise,Customer personal data,Open
+2026-11-05,ACM-11497,Support,Microsoft 365 Copilot,Customer personal data,Open
+2026-11-05,ACM-11756,Support,ChatGPT Enterprise,Customer personal data,Open
+2026-11-04,ACM-10644,Engineering,ChatGPT Enterprise,Customer personal data,Reviewed
+2026-11-04,ACM-11050,Sales,Microsoft 365 Copilot,Customer personal data,Reviewed
+2026-11-04,ACM-12277,Finance & Ops,ChatGPT Enterprise,Customer personal data,Open
+2026-11-04,ACM-10758,Marketing,Microsoft 365 Copilot,Financial data,Open
+2026-11-04,ACM-10982,Sales,Microsoft 365 Copilot,Financial data,Reviewed
+2026-11-04,ACM-12003,Product & Design,Claude Enterprise,Passwords & access keys,Reviewed
+2026-11-03,ACM-10184,Engineering,Microsoft 365 Copilot,Passwords & access keys,Open
+2026-11-01,ACM-11414,Sales,Microsoft 365 Copilot,Customer personal data,Open
+2026-11-01,ACM-12212,Finance & Ops,Microsoft 365 Copilot,Financial data,Open

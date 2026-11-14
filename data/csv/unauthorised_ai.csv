@@ -1,0 +1,182 @@
+employee_id,department,tool,category,how_found,first_seen,monthly_cost_usd,approved_alternative
+ACM-10087,Engineering,Perplexity,Text,Work-email sign-up,2026-11-12,0,ChatGPT Enterprise
+ACM-10428,Engineering,Perplexity,Text,Work-email sign-up,2026-09-12,0,ChatGPT Enterprise
+ACM-10541,Engineering,Perplexity,Text,Work-email sign-up,2026-09-03,0,ChatGPT Enterprise
+ACM-10016,Engineering,Perplexity,Text,Work-email sign-up,2026-10-13,0,ChatGPT Enterprise
+ACM-10329,Engineering,Perplexity,Text,Work-email sign-up,2026-10-28,0,ChatGPT Enterprise
+ACM-10625,Engineering,Perplexity,Text,Work-email sign-up,2026-08-06,0,ChatGPT Enterprise
+ACM-10246,Engineering,Perplexity,Text,Work-email sign-up,2026-09-03,0,ChatGPT Enterprise
+ACM-10192,Engineering,Perplexity,Text,Work-email sign-up,2026-09-12,0,ChatGPT Enterprise
+ACM-10121,Engineering,Perplexity,Text,Work-email sign-up,2026-11-16,0,ChatGPT Enterprise
+ACM-10028,Engineering,Perplexity,Text,Work-email sign-up,2026-11-16,0,ChatGPT Enterprise
+ACM-10703,Engineering,Perplexity,Text,Work-email sign-up,2026-09-26,0,ChatGPT Enterprise
+ACM-10194,Engineering,Perplexity,Text,Work-email sign-up,2026-08-07,0,ChatGPT Enterprise
+ACM-10960,Marketing,Perplexity,Text,Work-email sign-up,2026-11-12,0,ChatGPT Enterprise
+ACM-10889,Marketing,Perplexity,Text,Work-email sign-up,2026-08-29,0,ChatGPT Enterprise
+ACM-10878,Marketing,Perplexity,Text,Work-email sign-up,2026-08-29,0,ChatGPT Enterprise
+ACM-10934,Marketing,Perplexity,Text,Work-email sign-up,2026-10-04,0,ChatGPT Enterprise
+ACM-10920,Marketing,Perplexity,Text,Work-email sign-up,2026-08-28,0,ChatGPT Enterprise
+ACM-10872,Marketing,Perplexity,Text,Work-email sign-up,2026-08-26,0,ChatGPT Enterprise
+ACM-10927,Marketing,Perplexity,Text,Work-email sign-up,2026-11-10,0,ChatGPT Enterprise
+ACM-10770,Marketing,Perplexity,Text,Work-email sign-up,2026-10-18,0,ChatGPT Enterprise
+ACM-10757,Marketing,Perplexity,Text,Work-email sign-up,2026-09-30,0,ChatGPT Enterprise
+ACM-10759,Marketing,Perplexity,Text,Work-email sign-up,2026-10-01,0,ChatGPT Enterprise
+ACM-10705,Marketing,Perplexity,Text,Work-email sign-up,2026-10-01,0,ChatGPT Enterprise
+ACM-10738,Marketing,Perplexity,Text,Work-email sign-up,2026-08-17,0,ChatGPT Enterprise
+ACM-10863,Marketing,Perplexity,Text,Work-email sign-up,2026-09-14,0,ChatGPT Enterprise
+ACM-10806,Marketing,Perplexity,Text,Work-email sign-up,2026-09-12,0,ChatGPT Enterprise
+ACM-10948,Marketing,Perplexity,Text,Work-email sign-up,2026-08-07,0,ChatGPT Enterprise
+ACM-10825,Marketing,Perplexity,Text,Work-email sign-up,2026-09-29,0,ChatGPT Enterprise
+ACM-10883,Marketing,Perplexity,Text,Work-email sign-up,2026-08-25,0,ChatGPT Enterprise
+ACM-10721,Marketing,Perplexity,Text,Work-email sign-up,2026-09-01,0,ChatGPT Enterprise
+ACM-11378,Sales,Perplexity,Text,Work-email sign-up,2026-10-28,0,ChatGPT Enterprise
+ACM-11290,Sales,Perplexity,Text,Work-email sign-up,2026-10-13,0,ChatGPT Enterprise
+ACM-11315,Sales,Perplexity,Text,Work-email sign-up,2026-09-14,0,ChatGPT Enterprise
+ACM-11318,Sales,Perplexity,Text,Work-email sign-up,2026-10-08,0,ChatGPT Enterprise
+ACM-11295,Sales,Perplexity,Text,Work-email sign-up,2026-08-07,0,ChatGPT Enterprise
+ACM-11186,Sales,Perplexity,Text,Work-email sign-up,2026-11-17,0,ChatGPT Enterprise
+ACM-11237,Sales,Perplexity,Text,Work-email sign-up,2026-10-19,0,ChatGPT Enterprise
+ACM-11089,Sales,Perplexity,Text,Work-email sign-up,2026-10-05,0,ChatGPT Enterprise
+ACM-11066,Sales,Perplexity,Text,Work-email sign-up,2026-08-22,0,ChatGPT Enterprise
+ACM-11119,Sales,Perplexity,Text,Work-email sign-up,2026-08-21,0,ChatGPT Enterprise
+ACM-10981,Sales,Perplexity,Text,Work-email sign-up,2026-08-08,0,ChatGPT Enterprise
+ACM-11191,Sales,Perplexity,Text,Work-email sign-up,2026-09-15,0,ChatGPT Enterprise
+ACM-11272,Sales,Perplexity,Text,Work-email sign-up,2026-08-12,0,ChatGPT Enterprise
+ACM-11363,Sales,Perplexity,Text,Work-email sign-up,2026-08-14,0,ChatGPT Enterprise
+ACM-11393,Sales,Perplexity,Text,Work-email sign-up,2026-11-15,0,ChatGPT Enterprise
+ACM-11470,Sales,Perplexity,Text,Work-email sign-up,2026-08-13,0,ChatGPT Enterprise
+ACM-11372,Sales,Perplexity,Text,Work-email sign-up,2026-09-16,0,ChatGPT Enterprise
+ACM-11030,Sales,Perplexity,Text,Work-email sign-up,2026-08-30,0,ChatGPT Enterprise
+ACM-11293,Sales,Perplexity,Text,Work-email sign-up,2026-08-31,0,ChatGPT Enterprise
+ACM-11345,Sales,Perplexity,Text,Work-email sign-up,2026-08-30,0,ChatGPT Enterprise
+ACM-10970,Sales,Perplexity,Text,Work-email sign-up,2026-09-02,0,ChatGPT Enterprise
+ACM-11096,Sales,Perplexity,Text,Work-email sign-up,2026-09-01,0,ChatGPT Enterprise
+ACM-11011,Sales,Perplexity,Text,Work-email sign-up,2026-09-27,0,ChatGPT Enterprise
+ACM-11095,Sales,Perplexity,Text,Work-email sign-up,2026-08-05,0,ChatGPT Enterprise
+ACM-11202,Sales,Perplexity,Text,Work-email sign-up,2026-11-15,0,ChatGPT Enterprise
+ACM-11715,Support,Perplexity,Text,Work-email sign-up,2026-10-07,0,ChatGPT Enterprise
+ACM-11551,Support,Perplexity,Text,Work-email sign-up,2026-10-13,0,ChatGPT Enterprise
+ACM-11845,Support,Perplexity,Text,Work-email sign-up,2026-08-11,0,ChatGPT Enterprise
+ACM-11867,Support,Perplexity,Text,Work-email sign-up,2026-10-23,0,ChatGPT Enterprise
+ACM-11955,Support,Perplexity,Text,Work-email sign-up,2026-10-07,0,ChatGPT Enterprise
+ACM-11701,Support,Perplexity,Text,Work-email sign-up,2026-11-03,0,ChatGPT Enterprise
+ACM-12044,Product & Design,Perplexity,Text,Work-email sign-up,2026-09-10,0,ChatGPT Enterprise
+ACM-12105,Product & Design,Perplexity,Text,Work-email sign-up,2026-08-19,0,ChatGPT Enterprise
+ACM-12109,Product & Design,Perplexity,Text,Work-email sign-up,2026-10-05,0,ChatGPT Enterprise
+ACM-12000,Product & Design,Perplexity,Text,Work-email sign-up,2026-09-14,0,ChatGPT Enterprise
+ACM-12034,Product & Design,Perplexity,Text,Work-email sign-up,2026-09-29,0,ChatGPT Enterprise
+ACM-11981,Product & Design,Perplexity,Text,Work-email sign-up,2026-09-29,0,ChatGPT Enterprise
+ACM-12004,Product & Design,Perplexity,Text,Work-email sign-up,2026-08-17,0,ChatGPT Enterprise
+ACM-12014,Product & Design,Perplexity,Text,Work-email sign-up,2026-09-04,0,ChatGPT Enterprise
+ACM-12020,Product & Design,Perplexity,Text,Work-email sign-up,2026-10-24,0,ChatGPT Enterprise
+ACM-12147,Finance & Ops,Perplexity,Text,Work-email sign-up,2026-09-07,0,ChatGPT Enterprise
+ACM-12196,Finance & Ops,Perplexity,Text,Work-email sign-up,2026-09-22,0,ChatGPT Enterprise
+ACM-12225,Finance & Ops,Perplexity,Text,Work-email sign-up,2026-09-03,0,ChatGPT Enterprise
+ACM-12129,Finance & Ops,Perplexity,Text,Work-email sign-up,2026-09-13,0,ChatGPT Enterprise
+ACM-12398,HR,Perplexity,Text,Work-email sign-up,2026-08-21,0,ChatGPT Enterprise
+ACM-12337,HR,Perplexity,Text,Work-email sign-up,2026-09-07,0,ChatGPT Enterprise
+ACM-10433,Engineering,Fireflies.ai,Voice,Work calendar connected,2026-10-21,0,Otter.ai
+ACM-10005,Engineering,Fireflies.ai,Voice,Work calendar connected,2026-10-20,0,Otter.ai
+ACM-10401,Engineering,Fireflies.ai,Voice,Work calendar connected,2026-08-14,0,Otter.ai
+ACM-10945,Marketing,Fireflies.ai,Voice,Work calendar connected,2026-10-13,0,Otter.ai
+ACM-10879,Marketing,Fireflies.ai,Voice,Work calendar connected,2026-08-26,0,Otter.ai
+ACM-10875,Marketing,Fireflies.ai,Voice,Work calendar connected,2026-10-11,0,Otter.ai
+ACM-10708,Marketing,Fireflies.ai,Voice,Work calendar connected,2026-08-02,0,Otter.ai
+ACM-10877,Marketing,Fireflies.ai,Voice,Work calendar connected,2026-11-06,0,Otter.ai
+ACM-10949,Marketing,Fireflies.ai,Voice,Work calendar connected,2026-10-26,0,Otter.ai
+ACM-11452,Sales,Fireflies.ai,Voice,Work calendar connected,2026-09-24,0,Otter.ai
+ACM-11075,Sales,Fireflies.ai,Voice,Work calendar connected,2026-08-25,0,Otter.ai
+ACM-11460,Sales,Fireflies.ai,Voice,Work calendar connected,2026-10-25,0,Otter.ai
+ACM-11303,Sales,Fireflies.ai,Voice,Work calendar connected,2026-11-08,0,Otter.ai
+ACM-11194,Sales,Fireflies.ai,Voice,Work calendar connected,2026-10-25,0,Otter.ai
+ACM-11412,Sales,Fireflies.ai,Voice,Work calendar connected,2026-09-03,0,Otter.ai
+ACM-11126,Sales,Fireflies.ai,Voice,Work calendar connected,2026-10-18,0,Otter.ai
+ACM-11221,Sales,Fireflies.ai,Voice,Work calendar connected,2026-09-30,0,Otter.ai
+ACM-11373,Sales,Fireflies.ai,Voice,Work calendar connected,2026-09-29,0,Otter.ai
+ACM-11012,Sales,Fireflies.ai,Voice,Work calendar connected,2026-10-03,0,Otter.ai
+ACM-11291,Sales,Fireflies.ai,Voice,Work calendar connected,2026-10-15,0,Otter.ai
+ACM-11043,Sales,Fireflies.ai,Voice,Work calendar connected,2026-08-24,0,Otter.ai
+ACM-11407,Sales,Fireflies.ai,Voice,Work calendar connected,2026-08-22,0,Otter.ai
+ACM-11119,Sales,Fireflies.ai,Voice,Work calendar connected,2026-09-16,0,Otter.ai
+ACM-11103,Sales,Fireflies.ai,Voice,Work calendar connected,2026-10-18,0,Otter.ai
+ACM-11316,Sales,Fireflies.ai,Voice,Work calendar connected,2026-09-05,0,Otter.ai
+ACM-10983,Sales,Fireflies.ai,Voice,Work calendar connected,2026-09-21,0,Otter.ai
+ACM-11192,Sales,Fireflies.ai,Voice,Work calendar connected,2026-08-20,0,Otter.ai
+ACM-11128,Sales,Fireflies.ai,Voice,Work calendar connected,2026-09-03,0,Otter.ai
+ACM-11148,Sales,Fireflies.ai,Voice,Work calendar connected,2026-11-11,0,Otter.ai
+ACM-11215,Sales,Fireflies.ai,Voice,Work calendar connected,2026-10-10,0,Otter.ai
+ACM-11361,Sales,Fireflies.ai,Voice,Work calendar connected,2026-10-11,0,Otter.ai
+ACM-11939,Support,Fireflies.ai,Voice,Work calendar connected,2026-08-11,0,Otter.ai
+ACM-11535,Support,Fireflies.ai,Voice,Work calendar connected,2026-09-21,0,Otter.ai
+ACM-11947,Support,Fireflies.ai,Voice,Work calendar connected,2026-09-16,0,Otter.ai
+ACM-11717,Support,Fireflies.ai,Voice,Work calendar connected,2026-11-08,0,Otter.ai
+ACM-11606,Support,Fireflies.ai,Voice,Work calendar connected,2026-10-30,0,Otter.ai
+ACM-12021,Product & Design,Fireflies.ai,Voice,Work calendar connected,2026-10-29,0,Otter.ai
+ACM-12104,Product & Design,Fireflies.ai,Voice,Work calendar connected,2026-11-13,0,Otter.ai
+ACM-12260,Finance & Ops,Fireflies.ai,Voice,Work calendar connected,2026-10-31,0,Otter.ai
+ACM-12379,HR,Fireflies.ai,Voice,Work calendar connected,2026-10-21,0,Otter.ai
+ACM-12390,HR,Fireflies.ai,Voice,Work calendar connected,2026-11-03,0,Otter.ai
+ACM-12325,HR,Fireflies.ai,Voice,Work calendar connected,2026-11-13,0,Otter.ai
+ACM-10626,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-10-25,20,Claude Enterprise
+ACM-10272,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-08-30,20,Claude Enterprise
+ACM-10569,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-09-23,20,Claude Enterprise
+ACM-10506,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-11-15,20,Claude Enterprise
+ACM-10536,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-09-01,20,Claude Enterprise
+ACM-10634,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-08-02,20,Claude Enterprise
+ACM-10598,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-09-25,20,Claude Enterprise
+ACM-10384,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-09-08,20,Claude Enterprise
+ACM-10493,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-11-06,20,Claude Enterprise
+ACM-10568,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-08-14,20,Claude Enterprise
+ACM-10318,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-09-01,20,Claude Enterprise
+ACM-10575,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-10-26,20,Claude Enterprise
+ACM-10614,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-11-09,20,Claude Enterprise
+ACM-10098,Engineering,Claude Pro (personal plan),Text,Expense claim,2026-11-11,20,Claude Enterprise
+ACM-10950,Marketing,Claude Pro (personal plan),Text,Expense claim,2026-09-02,20,Claude Enterprise
+ACM-10707,Marketing,Claude Pro (personal plan),Text,Expense claim,2026-10-29,20,Claude Enterprise
+ACM-10877,Marketing,Claude Pro (personal plan),Text,Expense claim,2026-09-21,20,Claude Enterprise
+ACM-12083,Product & Design,Claude Pro (personal plan),Text,Expense claim,2026-09-20,20,Claude Enterprise
+ACM-12097,Product & Design,Claude Pro (personal plan),Text,Expense claim,2026-10-15,20,Claude Enterprise
+ACM-12066,Product & Design,Claude Pro (personal plan),Text,Expense claim,2026-10-05,20,Claude Enterprise
+ACM-11986,Product & Design,Claude Pro (personal plan),Text,Expense claim,2026-10-01,20,Claude Enterprise
+ACM-10883,Marketing,Leonardo.ai,Image,Work-email sign-up,2026-10-10,0,Adobe Firefly
+ACM-10747,Marketing,Leonardo.ai,Image,Work-email sign-up,2026-08-12,0,Adobe Firefly
+ACM-10740,Marketing,Leonardo.ai,Image,Work-email sign-up,2026-09-11,0,Adobe Firefly
+ACM-10855,Marketing,Leonardo.ai,Image,Work-email sign-up,2026-08-04,0,Adobe Firefly
+ACM-10838,Marketing,Leonardo.ai,Image,Work-email sign-up,2026-09-20,0,Adobe Firefly
+ACM-10854,Marketing,Leonardo.ai,Image,Work-email sign-up,2026-09-02,0,Adobe Firefly
+ACM-10753,Marketing,Leonardo.ai,Image,Work-email sign-up,2026-11-11,0,Adobe Firefly
+ACM-10819,Marketing,Leonardo.ai,Image,Work-email sign-up,2026-08-09,0,Adobe Firefly
+ACM-10704,Marketing,Leonardo.ai,Image,Work-email sign-up,2026-11-03,0,Adobe Firefly
+ACM-12116,Product & Design,Leonardo.ai,Image,Work-email sign-up,2026-09-09,0,Adobe Firefly
+ACM-12109,Product & Design,Leonardo.ai,Image,Work-email sign-up,2026-10-09,0,Adobe Firefly
+ACM-12099,Product & Design,Leonardo.ai,Image,Work-email sign-up,2026-08-29,0,Adobe Firefly
+ACM-12010,Product & Design,Leonardo.ai,Image,Work-email sign-up,2026-11-11,0,Adobe Firefly
+ACM-11967,Product & Design,Leonardo.ai,Image,Work-email sign-up,2026-11-12,0,Adobe Firefly
+ACM-10306,Engineering,DeepSeek,Text,Work-email sign-up,2026-11-06,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-10674,Engineering,DeepSeek,Text,Work-email sign-up,2026-08-14,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-10552,Engineering,DeepSeek,Text,Work-email sign-up,2026-09-14,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-10031,Engineering,DeepSeek,Text,Work-email sign-up,2026-08-29,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-10088,Engineering,DeepSeek,Text,Work-email sign-up,2026-11-03,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-10698,Engineering,DeepSeek,Text,Work-email sign-up,2026-08-19,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-10535,Engineering,DeepSeek,Text,Work-email sign-up,2026-08-25,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-10477,Engineering,DeepSeek,Text,Work-email sign-up,2026-11-19,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-10660,Engineering,DeepSeek,Text,Work-email sign-up,2026-08-12,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-10896,Marketing,DeepSeek,Text,Work-email sign-up,2026-09-09,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-10704,Marketing,DeepSeek,Text,Work-email sign-up,2026-09-13,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-11409,Sales,DeepSeek,Text,Work-email sign-up,2026-08-30,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-12056,Product & Design,DeepSeek,Text,Work-email sign-up,2026-09-26,0,ChatGPT Enterprise (DeepSeek is blocked)
+ACM-10923,Marketing,HeyGen,Video,Work-email sign-up,2026-10-24,0,Synthesia
+ACM-10829,Marketing,HeyGen,Video,Work-email sign-up,2026-08-29,0,Synthesia
+ACM-10894,Marketing,HeyGen,Video,Work-email sign-up,2026-11-15,0,Synthesia
+ACM-10848,Marketing,HeyGen,Video,Work-email sign-up,2026-11-16,0,Synthesia
+ACM-10875,Marketing,HeyGen,Video,Work-email sign-up,2026-10-24,0,Synthesia
+ACM-10866,Marketing,HeyGen,Video,Work-email sign-up,2026-08-27,0,Synthesia
+ACM-10932,Marketing,HeyGen,Video,Work-email sign-up,2026-11-15,0,Synthesia
+ACM-11209,Sales,HeyGen,Video,Work-email sign-up,2026-09-02,0,Synthesia
+ACM-11388,Sales,HeyGen,Video,Work-email sign-up,2026-10-09,0,Synthesia
+ACM-11980,Product & Design,HeyGen,Video,Work-email sign-up,2026-10-25,0,Synthesia
+ACM-12327,HR,HeyGen,Video,Work-email sign-up,2026-10-26,0,Synthesia
+ACM-10821,Marketing,Suno,Voice,Expense claim,2026-09-25,10,None approved yet
+ACM-10870,Marketing,Suno,Voice,Expense claim,2026-08-21,10,None approved yet
+ACM-10856,Marketing,Suno,Voice,Expense claim,2026-08-09,10,None approved yet
+ACM-10705,Marketing,Suno,Voice,Expense claim,2026-10-16,10,None approved yet
