@@ -1,12 +1,28 @@
-# AI Governance Dashboard (prototype)
+# AI Governance Dashboard (Prototype & PM Scoping Plan)
 
-An interactive, front-end-only prototype of an **AI Governance dashboard** that shows AI tool usage, spend against approved limits, and "Shadow AI" across an organisation. It runs on a realistic **mock dataset of 2,400 employees** at a fictional company, *Acme Corp*.
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20on%20GitHub%20Pages-2145ff?style=for-the-badge&logo=github)](https://ankurray1.github.io/ai-governance-dashboard/)
+[![Submission Doc](https://img.shields.io/badge/PM%20Plan-Part%202%20API%20%26%20Data%20Sources-0a85ea?style=for-the-badge)](./docs/SUBMISSION.md)
 
-Built as a PM assignment: *define the data you need, decide how you'd source it, and communicate it simply to a non-technical stakeholder (CFO or IT/security lead).*
+An interactive prototype and comprehensive product specification for an **AI Governance Dashboard** that provides centralized visibility into AI tool adoption, spend against approved limits, and "Shadow AI" across an organisation. It runs on a realistic **mock dataset of 2,400 employees** at a fictional company, *Acme Corp*.
 
-## Open it
+Built as a PM assignment for leadership stakeholders (**CFO** and **IT / Security Lead**).
 
-**Just double-click `AI-Governance-Dashboard.html`.** Everything (code, styles, data) is inside that one file, so it needs no install and no internet.
+### 🚀 Live Interactive Prototype
+👉 **[View Live Dashboard on GitHub Pages](https://ankurray1.github.io/ai-governance-dashboard/)**
+
+### 📄 Executive Documentation
+- [Part 2: API & Data Source Plan](./docs/SUBMISSION.md)
+- [Product Decisions Log](./docs/PRODUCT_DECISIONS.md)
+
+---
+
+## Open it Locally
+
+**Option 1: Single-file double-click**  
+Double-click `AI-Governance-Dashboard.html`. Everything (React app, styles, mock dataset) is bundled into that single file—no server, internet connection, or dependencies required.
+
+**Option 2: Live GitHub Pages URL**  
+Visit [https://ankurray1.github.io/ai-governance-dashboard/](https://ankurray1.github.io/ai-governance-dashboard/)
 
 ## What you can do
 
