@@ -20,9 +20,9 @@ This document presents **Part 2: API & Data Source Plan**, detailing the data so
 
 ## Part 2: API & Data Source Plan
 
-### 1. Data Architecture: The 4 Core Ingestion Layers
+### 1. Data Architecture: The 3 Core Automated Ingestion Layers + Admin Settings
 
-To solve the governance problem without building complex proprietary telemetry clients on day one, we aggregate data across **four existing enterprise systems of record**:
+To solve the governance problem without building complex proprietary telemetry clients on day one, we aggregate automated data across **three enterprise systems of record**, while managing budgets and non-API tools through **lightweight in-app administrative configuration**:
 
 ```
  ┌────────────────────────────────────────────────────────────────────────┐
@@ -30,13 +30,17 @@ To solve the governance problem without building complex proprietary telemetry c
  └───────▲────────────────────▲────────────────────▲────────────────▲─────┘
          │                    │                    │                │
  ┌───────┴────────┐   ┌───────┴────────┐   ┌───────┴────────┐   ┌───┴────────────┐
- │  1. Identity & │   │ 2. Direct AI   │   │  3. Finance &  │   │  4. Security & │
- │     Org (HRIS) │   │    Vendor APIs │   │     Expense    │   │      DLP Logs  │
+ │  1. Identity & │   │ 2. Direct AI   │   │  3. Expense &  │   │ 4. Security &  │
+ │     Org (HRIS) │   │    Vendor APIs │   │     Corp Cards │   │     DLP Stream │
  ├────────────────┤   ├────────────────┤   ├────────────────┤   ├────────────────┤
- │ • Workday/Okta │   │ • OpenAI Admin │   │ • NetSuite ERP │   │ • MS Purview   │
- │ • SCIM 2.0     │   │ • MS Graph     │   │ • Ramp / Brex  │   │ • O365 Audit   │
- │ • Entra / Google│  │ • Anthropic    │   │ • Expensify    │   │ • CASB / DLP   │
+ │ • Workday/Okta │   │ • OpenAI Admin │   │ • Ramp Webhooks│   │ • MS Purview   │
+ │ • SCIM 2.0     │   │ • MS Graph     │   │ • Brex API     │   │ • O365 Audit   │
+ │ • Entra ID     │   │ • Anthropic    │   │ • Expensify    │   │ • CASB / DLP   │
  └────────────────┘   └────────────────┘   └────────────────┘   └────────────────┘
+         │
+         ▼
+ [ Native Admin Configuration ]: Monthly Department Budgets ($105,000 ceiling)
+ and non-API seat counts (e.g. Midjourney) are configured directly in Settings by Finance.
 ```
 
 ---
@@ -45,12 +49,12 @@ To solve the governance problem without building complex proprietary telemetry c
 
 | Dashboard Metric / Card | Required Data | Primary Source / API | Exact Endpoint / Method | Integration Type & Latency | PM Rationale & Practical Nuance |
 |---|---|---|---|---|---|
-| **AI Spend This Month vs Budget** (Hero Card) | • Total MTD spend ($97,100)<br>• Monthly budget ($105,000)<br>• Fixed vs Pay-per-use split | • ERP / FP&A Tool (NetSuite / Anaplan)<br>• Vendor Billing APIs<br>• Accounts Payable (Invoices) | • NetSuite SuiteTalk REST API (`/record/v1/budget`)<br>• OpenAI `/v1/organization/costs`<br>• Anthropic `cost_report`<br>• Azure Cost Management API | **Daily Batch & Hourly Webhooks**<br>Budget: Monthly sync<br>Spend: ~2h latency | Budgets are defined centrally by Finance in the ERP. AI costs are a hybrid of predictable seat licenses ($92.3k) and volatile pay-per-use token charges ($4.8k). Direct billing APIs capture consumption before month-end invoice shock. |
-| **Department Spend vs Budget** (Budget Chart) | • Spend per department<br>• Month-end forecast<br>• Dept budget limits<br>• Dept owners | • HRIS (Workday / BambooHR)<br>• ERP Cost Center Hierarchy<br>• Vendor Usage by Cost Center / Workspace | • SCIM 2.0 User Sync (`/Users`, `/Groups`)<br>• Workday RaaS (Report-as-a-Service)<br>• OpenAI Projects/Workspaces API | **Nightly SCIM Sync**<br>Hierarchy: Daily<br>Spend: Daily | Budgets exist **only at the department level**. If users filter by location or level, the budget line must be hidden rather than inventing false sub-budgets. Department owners (e.g. VP Eng, Head of Mktg) are dynamically pulled from HRIS. |
-| **AI Adoption Rate** (KPI Card) | • Active users last 30d (1,392)<br>• Total employee baseline (2,400)<br>• % adoption vs target (58% vs 70%) | • HRIS (Employee headcount)<br>• Vendor Admin Activity Telemetry | • HRIS Active Employee Count (`status == 'ACTIVE'`)<br>• OpenAI `/v1/organization/users` (`last_active_at`)<br>• Microsoft Graph `reports/getOffice365ActiveUserDetail(period='D30')` | **Daily Telemetry Batch**<br>Latency: 24–48 hours (Microsoft Graph limitation) | Adoption cannot simply be "licenses bought." It requires checking `last_active_at <= 30 days`. Ghost/zombie licenses (paying $45/mo for someone who never logged in) are flagged for reclamation. |
-| **Approved AI Tools** (Carousel / Table) | • Seat count & cost<br>• Active usage %<br>• Pay-per-use caps<br>• Tool status | • Vendor Admin APIs (OpenAI, Anthropic, MS Graph, Synthesia, Runway, ElevenLabs)<br>• Accounts Payable Invoice Ledger | • OpenAI `/v1/organization/users`<br>• Azure Cognitive Services Usage API<br>• Runway / ElevenLabs Webhooks<br>• Manual / OCR Invoice Ingestion for Midjourney | **Hybrid (API + Invoiced Fallback)**<br>APIs: Daily sync<br>Invoices: Monthly PDF/ERP | **Data Honesty:** Midjourney does not offer an enterprise seat telemetry API. We explicitly display Midjourney as *"Invoiced licenses only — usage telemetry unavailable"*, avoiding fabricated adoption numbers. |
-| **Unapproved AI Tools** ("Shadow AI") | • Tool names & categories<br>• Detected users (174 min)<br>• Discovery vector<br>• Approved alternative | • Identity Provider (Okta / Entra / Google Workspace)<br>• Corporate Card & Expense Feeds (Ramp / Brex / Expensify)<br>• Calendar & OAuth App Permissions | • Okta System Log API (`eventType eq "user.authentication.auth_via_social"` or app sign-ins)<br>• Microsoft Graph `oauth2PermissionGrants`<br>• Ramp Developer API (`/developer/v1/transactions` filtered by MCC / AI merchant list)<br>• Google Workspace Third-Party Apps | **Near Real-Time Event Stream**<br>IdP: Webhook / Log Stream<br>Expenses: Daily webhook | **Zero-Agent Architecture:** Discovers Shadow AI without installing intrusive desktop endpoint spyware. We catch: 1) work email SSO logins, 2) calendar note-taker bot grants (Fireflies/Otter), and 3) expensed personal subscriptions on company cards. |
-| **Sensitive Data Alerts** (DLP Card) | • Alert counts (38 total)<br>• Categories (Customer PII, Financials, Passwords)<br>• Tool & user involved<br>• Review status | • Cloud Security & Enterprise DLP (Microsoft Purview / O365 Management API)<br>• OpenAI Enterprise Audit Logs | • Office 365 Management Activity API (`DlpMatches`, `SensitivityLabelAction`)<br>• OpenAI `/v1/organization/audit_logs` (event types: `sensitive_flag`, `data_export`)<br>• Netskope / Cloudflare Zero Trust DLP Webhooks | **Real-Time Security Event Stream**<br>Push webhook: < 5 mins | **Strict Scope:** We **only** show data alerts for *approved enterprise tools* that have DLP hooks. We never falsely claim to inspect prompt text entered into personal accounts or unmanaged tools. |
+| **AI Spend This Month vs Budget** (Hero Card) | • Total MTD spend ($97,100)<br>• Monthly budget ($105,000)<br>• Fixed vs Pay-per-use split | • **Vendor Billing APIs** (OpenAI, Anthropic, Azure AI)<br>• **Corporate Card APIs** (Ramp, Brex)<br>• *Manual Admin Config (Budget)* | • OpenAI `/v1/organization/costs`<br>• Anthropic `cost_report`<br>• Ramp `/developer/v1/transactions`<br>• Admin Settings (Budget: $105k) | **Hourly Webhooks & Daily Sync**<br>Direct APIs: ~2h latency<br>Budget: Manual Setting | **PM Decision on Budgets:** Department budgets change quarterly or annually. Rather than building and maintaining fragile, expensive API pipelines to NetSuite/Anaplan, Finance sets or uploads budget ceilings directly in Admin Settings. Spend is tracked live via vendor billing APIs and card webhooks. |
+| **Department Spend vs Budget** (Budget Chart) | • Spend per department<br>• Month-end forecast<br>• Dept budget limits<br>• Dept owners | • **HRIS** (Workday / BambooHR)<br>• **Vendor Usage by Workspace** (OpenAI, Anthropic)<br>• *Manual Admin Config (Dept Budgets)* | • SCIM 2.0 User Sync (`/Users`, `/Groups`)<br>• Workday RaaS (Report-as-a-Service)<br>• OpenAI Projects/Workspaces API | **Nightly SCIM Sync**<br>Hierarchy: Daily<br>Spend: Daily | Department owners (e.g. VP Eng, Head of Mktg) and employee assignments are dynamically pulled from HRIS via SCIM. Budgets exist **only at the department level** and are configured directly by Finance. |
+| **AI Adoption Rate** (KPI Card) | • Active users last 30d (1,392)<br>• Total employee baseline (2,400)<br>• % adoption vs target (58% vs 70%) | • **HRIS** (Employee headcount)<br>• **Vendor Admin Activity Telemetry** | • HRIS Active Employee Count (`status == 'ACTIVE'`)<br>• OpenAI `/v1/organization/users` (`last_active_at`)<br>• Microsoft Graph `reports/getOffice365ActiveUserDetail(period='D30')` | **Daily Telemetry Batch**<br>Latency: 24–48 hours (Microsoft Graph limitation) | Adoption cannot simply be "licenses bought." It requires checking `last_active_at <= 30 days`. Ghost/zombie licenses (paying $45/mo for someone who never logged in) are flagged for reclamation. |
+| **Approved AI Tools** (Carousel / Table) | • Seat count & cost<br>• Active usage %<br>• Pay-per-use caps<br>• Tool status | • **Vendor Admin APIs** (OpenAI, Anthropic, MS Graph, Synthesia, Runway, ElevenLabs)<br>• *Manual Admin Config (Midjourney)* | • OpenAI `/v1/organization/users`<br>• Azure Cognitive Services Usage API<br>• Runway / ElevenLabs Webhooks<br>• Admin Settings (Midjourney seats) | **Direct APIs (Daily Sync)**<br>Midjourney: Manual Setting | **PM Decision on Invoiced Tools:** Midjourney has no enterprise user-telemetry API and operates via Discord. Rather than setting up complex Accounts Payable OCR ingestion, Finance simply enters the number of paid Midjourney seats in Admin Settings. Telemetry tools run via direct APIs. |
+| **Unapproved AI Tools** ("Shadow AI") | • Tool names & categories<br>• Detected users (174 min)<br>• Discovery vector<br>• Approved alternative | • **Identity Provider** (Okta / Entra / Google Workspace)<br>• **Corporate Card & Expense Feeds** (Ramp / Brex / Expensify)<br>• **Calendar & OAuth App Permissions** | • Okta System Log API (`eventType eq "user.authentication.auth_via_social"` or app sign-ins)<br>• Microsoft Graph `oauth2PermissionGrants`<br>• Ramp Developer API (`/developer/v1/transactions` filtered by MCC / AI merchant list)<br>• Google Workspace Third-Party Apps | **Near Real-Time Event Stream**<br>IdP: Webhook / Log Stream<br>Expenses: Daily webhook | **Zero-Agent Architecture:** Discovers Shadow AI without installing intrusive desktop endpoint spyware. We catch: 1) work email SSO logins, 2) calendar note-taker bot grants (Fireflies/Otter), and 3) expensed personal subscriptions on company cards. |
+| **Sensitive Data Alerts** (DLP Card) | • Alert counts (38 total)<br>• Categories (Customer PII, Financials, Passwords)<br>• Tool & user involved<br>• Review status | • **Cloud Security & Enterprise DLP** (Microsoft Purview / O365 Management API)<br>• **OpenAI Enterprise Audit Logs** | • Office 365 Management Activity API (`DlpMatches`, `SensitivityLabelAction`)<br>• OpenAI `/v1/organization/audit_logs` (event types: `sensitive_flag`, `data_export`)<br>• Netskope / Cloudflare Zero Trust DLP Webhooks | **Real-Time Security Event Stream**<br>Push webhook: < 5 mins | **Strict Scope:** We **only** show data alerts for *approved enterprise tools* that have DLP hooks. We never falsely claim to inspect prompt text entered into personal accounts or unmanaged tools. |
 
 ---
 
@@ -77,14 +81,13 @@ To solve the governance problem without building complex proprietary telemetry c
   - Sourced Data: Workspace seats, monthly invoice projections.
 - **Voice & Video Consumption APIs (Synthesia, Runway, ElevenLabs):**
   - Webhooks / Usage APIs tracking credit meters against departmental spending limits (e.g. Synthesia $2k cap, Runway $1.8k cap).
-- **The Non-API Fallback (Midjourney):**
-  - Fallback: ERP Accounts Payable ledger (NetSuite/QuickBooks) via invoice matching on vendor name "Midjourney Inc."
-  - PM Rule: Acknowledge vendor limitations openly. Midjourney does not offer employee-level telemetry; display invoiced seats bought rather than misleading active user metrics.
+- **Non-API Tools (Midjourney):**
+  - **Manual Configuration:** Managed directly through Admin Settings. Finance inputs total purchased seats ($60/seat/mo) without attempting to fabricate artificial active usage data.
 
 #### C. Financial Budgets & Shadow Expense Feeds (The "Limits" & "Shadow Spend")
-- **Departmental Budgets:**
-  - Source: FP&A Planning software (Anaplan / Workday Adaptive Planning) or direct REST import from NetSuite.
-  - Data: Monthly budget allocation per department ($105,000 total).
+- **Departmental Budgets (Manual Configuration):**
+  - Configured by Finance directly in the dashboard Admin Settings.
+  - Avoids the overhead of enterprise ERP API connectors (NetSuite/Anaplan) for static quarterly/annual allocations ($105,000 company total).
 - **Expense Ingestion (Shadow AI Discovery):**
   - Source: Corporate card APIs (Ramp, Brex) and expense software (Expensify, SAP Concur).
   - Method: Webhook on transaction approval. Match merchant descriptions against a curated AI dictionary (`Claude.ai Pro`, `Midjourney`, `Perplexity AI`, `Suno`, `Leonardo.ai`).
@@ -122,7 +125,7 @@ To prevent confusing the CFO and IT teams, the dashboard communicates expected d
 | **Microsoft Graph Copilot** | Daily scheduled sync | **24–48 hours** | Documented Microsoft platform delay; usage reflects T-2 days. |
 | **Expense & Corporate Cards** | Webhook push on settlement | Near real-time (< 1 hour) | Immediate alert when an unapproved tool is expensed. |
 | **DLP & Security Alerts** | Event stream webhook | < 5 minutes | Immediate notification of high-severity credential leakage. |
-| **Manual / Invoiced Billing** | Monthly ledger upload | Monthly | Fixed costs updated on invoice receipt. |
+| **Manual Admin Settings** | Instant on save | 0 seconds | Budget ceiling updates applied immediately across all views. |
 
 ---
 
@@ -132,15 +135,16 @@ To prevent confusing the CFO and IT teams, the dashboard communicates expected d
 Phase 1: Zero-Friction Foundation (Days 1–7)
   ├── 1. Connect Okta / Entra ID for work-email OAuth audit logs (Shadow AI baseline).
   ├── 2. Ingest HRIS SCIM roster (Workday) for 2,400 employee baseline and org hierarchy.
-  └── 3. Connect Ramp / Brex expense webhooks to catch expensed AI tools.
+  ├── 3. Connect Ramp / Brex expense webhooks to catch expensed AI tools.
+  └── 4. Set Department Budget ceilings ($105,000) directly in Admin Settings.
 
 Phase 2: High-Volume Vendor Integrations (Days 8–14)
   ├── 1. Connect OpenAI Enterprise Admin API (ChatGPT Enterprise spend & usage).
   ├── 2. Connect Microsoft Graph Reports API (Microsoft 365 Copilot activity).
-  └── 3. Import Departmental Budget ceilings from Finance ERP (NetSuite).
+  └── 3. Connect Anthropic Admin API (Claude Enterprise seats & spend).
 
 Phase 3: Deep Security & Video/Voice APIs (Days 15–21)
   ├── 1. Stream Microsoft Purview DLP incident alerts into the security card.
-  ├── 2. Connect Anthropic, Synthesia, Runway, and ElevenLabs usage webhooks.
-  └── 3. Establish AP invoice reconciliation workflow for Midjourney.
+  ├── 2. Connect Synthesia, Runway, and ElevenLabs consumption webhooks.
+  └── 3. Configure Midjourney seat counts in Admin Settings.
 ```

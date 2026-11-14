@@ -34,13 +34,6 @@ const TOOLS_API_SOURCES: ApiSourceItem[] = [
     howItWorks: 'Usage query webhooks to monitor credits consumed before month-end.',
     status: 'Ready (Standard API)',
   },
-  {
-    name: 'Vendor Billing Invoices (Midjourney Fallback)',
-    category: 'Expense / ERP',
-    purpose: 'Midjourney does not provide team usage telemetry APIs; tracked via invoiced seats.',
-    howItWorks: 'Monthly invoice ingestion from accounts payable or finance billing upload.',
-    status: 'Invoice Fallback',
-  },
 ];
 
 export default function ToolsTable({ view, filters, onTool }: Props) {
@@ -183,7 +176,7 @@ export default function ToolsTable({ view, filters, onTool }: Props) {
         <div className="fp-why" style={{ marginLeft: 24 }}>
           <div className="fp-section-label">Vendor Telemetry Note</div>
           <p className="fp-meaning">
-            Tools with direct telemetry (ChatGPT Enterprise, Microsoft Copilot) report exact user logins. Tools without user-level APIs (e.g. Midjourney) report purchased seat commitments via invoice.
+            Tools with direct telemetry APIs (ChatGPT Enterprise, Microsoft Copilot, Anthropic) report live user logins and token consumption. Tools without APIs (e.g. Midjourney) are entered as a manual seat configuration in Settings by Finance.
           </p>
         </div>
       </FlipModal>

@@ -10,13 +10,6 @@ interface Props { view: View; filters: Filters; onDept: (i: number) => void }
 
 const BUDGET_API_SOURCES: ApiSourceItem[] = [
   {
-    name: 'ERP / FP&A Planning Tool',
-    category: 'Finance Planning',
-    purpose: 'Monthly allocated AI spending limits assigned to each department (e.g. Engineering $25k, Marketing $18k).',
-    howItWorks: 'REST API sync or monthly budget CSV upload from Anaplan / Workday Adaptive Planning / NetSuite.',
-    status: 'Ready (Standard API)',
-  },
-  {
     name: 'Enterprise AI Vendor Billing APIs',
     category: 'Direct API',
     purpose: 'Real-time billing run-rate and usage fees per cost-center/workspace.',
