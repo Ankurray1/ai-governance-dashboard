@@ -311,3 +311,12 @@ button.mini-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 
 .src-n { flex: none; width: 22px; height: 22px; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-bg); border-radius: 50%; }
 .src-text { display: flex; flex-direction: column; gap: 2px; }
 .src-text span { color: var(--muted); line-height: 1.4; }
+
+/* tool logos */
+.tool-logo { display: block; flex: none; border-radius: 7px; background: var(--surface); object-fit: contain; }
+.mc-id { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.mc-id .tool-logo { border: 1px solid var(--border-soft); padding: 2px; width: 34px; height: 34px; }
+.top-name { display: flex; align-items: center; gap: 8px; }
+.top-name .tool-logo { border-radius: 4px; }
+.alert-tool { display: flex; align-items: center; gap: 6px; }
+.alert-tool .tool-logo { border-radius: 3px; }

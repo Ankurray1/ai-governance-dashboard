@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ToolLogo from './ToolLogo';
 import { DATA, fmtDay, View } from '../data/model';
 import { FEATURES } from '../data/sources';
 import Icon, { IconBadge } from './Icon';
@@ -62,7 +63,7 @@ export default function DataAlerts({ view }: { view: View }) {
             <span className="alert-date">{fmtDay(a.date)}</span>
             <span className="alert-who">
               <strong>{e.name} · {DATA.depts[e.dept].name}</strong>
-              <span>{DATA.alertTypes[a.type]} in {DATA.tools[a.tool].name}</span>
+              <span className="alert-tool"><ToolLogo name={DATA.tools[a.tool].name} size={14} />{DATA.alertTypes[a.type]} in {DATA.tools[a.tool].name}</span>
             </span>
             <span className={`pill ${a.status === 'Open' ? 'over' : 'neutral'}`}>{a.status === 'Open' ? 'To review' : 'Checked'}</span>
           </li>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ToolLogo from './ToolLogo';
 import { Filters, STATUS_LABEL, usd, View } from '../data/model';
 import { FEATURES } from '../data/sources';
 import { IconBadge } from './Icon';
@@ -77,7 +78,7 @@ export default function Budgets({ view, filters, onDept }: Props) {
               <div key={x.t.name} className="top-row">
                 <span className="rank">{r + 1}</span>
                 <div className="top-mid">
-                  <span className="top-name">{x.t.name}</span>
+                  <span className="top-name"><ToolLogo name={x.t.name} size={18} />{x.t.name}</span>
                   <div className="mini-track"><div className="mini-bar" style={{ width: full ? `${(x.a.active / maxA) * 100}%` : 0 }} /></div>
                 </div>
                 <div className="top-val">

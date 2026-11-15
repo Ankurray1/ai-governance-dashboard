@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ToolLogo from './ToolLogo';
 import { Filters, usd, View } from '../data/model';
 import { FEATURES } from '../data/sources';
 import { IconBadge } from './Icon';
@@ -44,7 +45,7 @@ export default function ToolsTable({ view, filters, onTool }: Props) {
           return (
             <button key={t.name} type="button" className={`mini-card tool tone-${tone} ${on ? 'on' : ''}`} onClick={() => onTool(ti)} aria-pressed={on}>
               <span className="mc-top">
-                <span className="mc-name">{t.name}<span className="mc-cat">{t.cat}</span></span>
+                <span className="mc-id"><ToolLogo name={t.name} /><span className="mc-name">{t.name}<span className="mc-cat">{t.cat}</span></span></span>
               </span>
               <span className={`status ${tone}`}>{status}</span>
               <span className="mc-metric">

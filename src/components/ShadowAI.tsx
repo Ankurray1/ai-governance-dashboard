@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ToolLogo from './ToolLogo';
 import { View } from '../data/model';
 import { FEATURES } from '../data/sources';
 import { IconBadge } from './Icon';
@@ -44,7 +45,7 @@ export default function ShadowAI({ view }: { view: View }) {
           {rows.map((r) => (
             <article key={r.name} className="mini-card shadow">
               <div className="mc-top">
-                <span className="mc-name">{r.name}<span className="mc-cat">{r.cat}</span></span>
+                <span className="mc-id"><ToolLogo name={r.name} /><span className="mc-name">{r.name}<span className="mc-cat">{r.cat}</span></span></span>
                 <span className="mc-num">{r.people}<small> people</small></span>
               </div>
               <div className="mc-row"><span>Found via</span><strong>{r.found}</strong></div>
