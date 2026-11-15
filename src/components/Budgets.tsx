@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Filters, STATUS_LABEL, usd, View } from '../data/model';
-import { SOURCES } from '../data/sources';
+import { FEATURES } from '../data/sources';
 import { IconBadge } from './Icon';
 import FlipModal, { Why } from './FlipModal';
 
@@ -90,7 +90,7 @@ export default function Budgets({ view, filters, onDept }: Props) {
         </aside>
       </div>
 
-      <FlipModal isOpen={popup} onClose={() => setPopup(false)} title="Spend vs budget by department" eyebrow="About this chart" sources={SOURCES.departments}>
+      <FlipModal isOpen={popup} onClose={() => setPopup(false)} title="Spend vs budget by department" eyebrow="About this chart" data={FEATURES.departments}>
         <p className="modal-text">Each department’s AI spend against the monthly budget Finance gave it, with the person who owns that budget.</p>
         <ul className="read-list">
           <li><i className="key seat ok" /><span><strong>Dark bar:</strong> spent so far this month</span></li>

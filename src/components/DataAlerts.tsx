@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DATA, fmtDay, View } from '../data/model';
-import { SOURCES } from '../data/sources';
+import { FEATURES } from '../data/sources';
 import Icon, { IconBadge } from './Icon';
 import FlipModal, { Why } from './FlipModal';
 
@@ -70,7 +70,7 @@ export default function DataAlerts({ view }: { view: View }) {
         {alertRows.length === 0 && <li className="caption">No alerts here.</li>}
       </ul>
 
-      <FlipModal isOpen={popup} onClose={() => setPopup(false)} tone="red" title="Sensitive data alerts" eyebrow="About this list" sources={SOURCES.alerts}>
+      <FlipModal isOpen={popup} onClose={() => setPopup(false)} tone="red" title="Sensitive data alerts" eyebrow="About this list" data={FEATURES.alerts}>
         <p className="modal-text">Times someone shared sensitive information with an <strong>approved</strong> AI tool such as Copilot or ChatGPT Enterprise.</p>
         <ul className="read-list">
           <li><span><strong>Customer personal data:</strong> names, emails, phone numbers or IDs</span></li>

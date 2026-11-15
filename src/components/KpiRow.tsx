@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ADOPTION_TARGET, SHADOW_BENCHMARK, STATUS_LABEL, usd, View } from '../data/model';
-import { SOURCES } from '../data/sources';
+import { FEATURES } from '../data/sources';
 import { IconBadge } from './Icon';
 import { DotGrid } from './InfoCard';
 import FlipModal, { Formula, Why } from './FlipModal';
@@ -105,7 +105,7 @@ export default function KpiRow({ view }: { view: View }) {
       </section>
 
       {/* ── "i" pop-ups ── */}
-      <FlipModal isOpen={popup === 'spend'} onClose={close} title="AI spend this month vs budget" sources={SOURCES.spend}>
+      <FlipModal isOpen={popup === 'spend'} onClose={close} title="AI spend this month vs budget" data={FEATURES.spend}>
         <p className="modal-text">Everything the company spent on approved AI tools this month, against the monthly budget Finance set.</p>
         <Formula a={[usd(kpi.spent), 'spent so far']} op="÷" b={[usd(kpi.budget), 'monthly budget']} result={[`${usedPct}%`, 'used']} />
         <p className="modal-text small-text">
@@ -114,7 +114,7 @@ export default function KpiRow({ view }: { view: View }) {
         <Why>If spend passes the budget, someone has to approve the extra cost or cut back before the bill arrives.</Why>
       </FlipModal>
 
-      <FlipModal isOpen={popup === 'adoption'} onClose={close} title="AI adoption" sources={SOURCES.adoption}>
+      <FlipModal isOpen={popup === 'adoption'} onClose={close} title="AI adoption" data={FEATURES.adoption}>
         <p className="modal-text">How many employees actually used an approved AI tool in the last 30 days.</p>
         <Formula a={[fmt(facts.activePeople), 'used approved AI']} op="÷" b={[fmt(facts.staff), 'employees']} result={[`${adoptionPct}%`, 'adoption']} />
         <div className="modal-visual">
@@ -124,7 +124,7 @@ export default function KpiRow({ view }: { view: View }) {
         <p className="modal-note">Tools that only send a bill (e.g. Midjourney) don’t say who uses them, so their users aren’t counted.</p>
       </FlipModal>
 
-      <FlipModal isOpen={popup === 'shadow'} onClose={close} tone="orange" title="Unapproved AI use" sources={SOURCES.shadow}>
+      <FlipModal isOpen={popup === 'shadow'} onClose={close} tone="orange" title="Unapproved AI use" data={FEATURES.shadowUse}>
         <p className="modal-text">How many employees we found using AI tools the company hasn’t approved (often called “Shadow AI”).</p>
         <Formula a={[fmt(facts.shadowPeople), 'using unapproved AI']} op="÷" b={[fmt(facts.staff), 'employees']} result={[`${shadowPct.toFixed(1)}%`, 'at least']} />
         <div className="modal-visual">
@@ -134,7 +134,7 @@ export default function KpiRow({ view }: { view: View }) {
         <p className="modal-note">“At least”, because personal accounts on personal devices can’t be seen. Found across {facts.unapprovedFound} tools.</p>
       </FlipModal>
 
-      <FlipModal isOpen={popup === 'alerts'} onClose={close} tone="red" title="Data alerts to review" sources={SOURCES.alerts}>
+      <FlipModal isOpen={popup === 'alerts'} onClose={close} tone="red" title="Data alerts to review" data={FEATURES.alertsToReview}>
         <p className="modal-text">Times this month someone shared sensitive information with an approved AI tool, and nobody has checked it yet.</p>
         <Formula a={[fmt(facts.alertsTotal), 'alerts this month']} op="−" b={[fmt(reviewed), 'already checked']} result={[fmt(facts.openAlerts), 'to review']} />
         <Why>Each one could be a data leak or a breach of privacy rules. The goal is to check every alert quickly.</Why>

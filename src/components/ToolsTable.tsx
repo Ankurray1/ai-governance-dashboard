@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Filters, usd, View } from '../data/model';
-import { SOURCES } from '../data/sources';
+import { FEATURES } from '../data/sources';
 import { IconBadge } from './Icon';
 import Carousel from './Carousel';
 import FlipModal, { Why } from './FlipModal';
@@ -65,7 +65,7 @@ export default function ToolsTable({ view, filters, onTool }: Props) {
         })}
       </Carousel>
 
-      <FlipModal isOpen={popup} onClose={() => setPopup(false)} title="Approved AI tools" eyebrow="About this list" sources={SOURCES.tools}>
+      <FlipModal isOpen={popup} onClose={() => setPopup(false)} title="Approved AI tools" eyebrow="About this list" data={FEATURES.tools}>
         <p className="modal-text">Every AI tool the company pays for, each checked against its own limit. Tools that need attention come first.</p>
         <ul className="read-list">
           <li><span><strong>Spending cap:</strong> pay-per-use tools (video and voice) have a monthly cap. “Runs out before month-end” means it will hit the cap at today’s pace.</span></li>

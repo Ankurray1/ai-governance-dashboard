@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View } from '../data/model';
-import { SOURCES } from '../data/sources';
+import { FEATURES } from '../data/sources';
 import { IconBadge } from './Icon';
 import Carousel from './Carousel';
 import FlipModal, { Why } from './FlipModal';
@@ -57,7 +57,7 @@ export default function ShadowAI({ view }: { view: View }) {
         </Carousel>
       )}
 
-      <FlipModal isOpen={popup} onClose={() => setPopup(false)} tone="orange" title="Unapproved AI tools" eyebrow="About this list" sources={SOURCES.shadow}>
+      <FlipModal isOpen={popup} onClose={() => setPopup(false)} tone="orange" title="Unapproved AI tools" eyebrow="About this list" data={FEATURES.shadowTools}>
         <p className="modal-text">AI tools employees use that the company hasn’t approved (“Shadow AI”), how we found them, and the approved tool to move people to.</p>
         <ul className="read-list">
           <li><span><strong>Work-email sign-up:</strong> someone registered with their work email</span></li>
