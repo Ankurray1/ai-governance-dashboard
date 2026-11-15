@@ -94,6 +94,16 @@ export default function Budgets({ view, filters, onDept }: Props) {
           <li><i className="key seat ok" /><span><strong>Bar:</strong> spent on licences this month</span></li>
           <li><i className="key line" /><span><strong>Black line:</strong> the department’s budget</span></li>
         </ul>
+        <div className="modal-label">When a department goes over budget</div>
+        <p className="modal-text small-text">Spend is licences × their monthly price, so it goes over when the licence bill grows past the budget:</p>
+        <ol className="cause-list">
+          <li><span><strong>More licences than the budget covers:</strong> too many bought for the budget set.</span></li>
+          <li><span><strong>New licences during the month:</strong> new hires, a team rollout or a new tool.</span></li>
+          <li><span><strong>A move to a pricier tool:</strong> e.g. Copilot ($30) to ChatGPT Enterprise ($45).</span></li>
+          <li><span><strong>Licences nobody uses:</strong> unused for 30 days, or still held by people who left.</span></li>
+          <li><span><strong>A price rise:</strong> the vendor charges more at renewal.</span></li>
+        </ol>
+        <p className="modal-note">Status: <strong>Over limit</strong> above 100% of budget · <strong>Near limit</strong> from 85% · otherwise <strong>On track</strong>.</p>
         <Why>It shows who is over budget and whom to talk to, before the month’s bill arrives.</Why>
       </FlipModal>
     </section>

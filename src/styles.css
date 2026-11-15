@@ -424,3 +424,8 @@ button.mini-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 
   .upload-btn { font-size: 12px; padding: 0 10px; }
   .guide-list li { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* "i" card: numbered causes list */
+.cause-list { margin: 0; padding: 0; list-style: none; counter-reset: cause; display: flex; flex-direction: column; gap: 6px; }
+.cause-list li { counter-increment: cause; display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: baseline; padding: 9px 12px; font-size: 13px; line-height: 1.45; color: var(--ink-2); background: var(--panel); border-radius: 10px; }
+.cause-list li::before { content: counter(cause); width: 22px; height: 22px; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-bg); border-radius: 50%; align-self: start; }
