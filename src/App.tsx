@@ -1,22 +1,30 @@
 import { useMemo, useState } from 'react';
-import { compute, DATA, DEFAULT_FILTERS, Filters, fmtDate } from './data/model';
+import { compute, DATA, DEFAULT_FILTERS, Filters, fmtDate, loadDataset, RawData, SAMPLE, SOURCE } from './data/model';
 import PageHeader from './components/PageHeader';
 import KpiRow from './components/KpiRow';
 import Budgets from './components/Budgets';
 import ToolsTable from './components/ToolsTable';
 import ShadowAI from './components/ShadowAI';
 import DataAlerts from './components/DataAlerts';
+import { plural } from './data/csvImport';
 
 export default function App() {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
-  const view = useMemo(() => compute(filters), [filters]);
+  const [version, setVersion] = useState(0); // bumps when a new dataset is loaded
+  const view = useMemo(() => compute(filters), [filters, version]);
+  const showData = (data: RawData, source: { kind: 'sample' | 'file'; name: string }) => {
+    loadDataset(data, source);
+    setFilters(DEFAULT_FILTERS);
+    setVersion((v) => v + 1);
+    window.scrollTo({ top: 0 });
+  };
   const update = (patch: Partial<Filters>) => setFilters((f) => ({ ...f, ...patch }));
   const focused = filters.dept >= 0 || filters.tool >= 0;
 
   return (
     <div className="shell">
-      <main id="overview" className="main">
-        <PageHeader />
+      <main id="overview" className="main" key={version}>
+        <PageHeader onLoad={(d, name) => showData(d, { kind: 'file', name })} onReset={() => showData(SAMPLE, { kind: 'sample', name: 'Sample data' })} />
         {focused && (
           <div className="focus-bar" role="status">
             Showing <strong>{view.scopeName}</strong>
@@ -37,10 +45,10 @@ export default function App() {
             sign-in system · expense claims · company data-protection tool · budgets set by Finance. Tap any “i” for details.
           </p>
           <p>
-            Prototype with sample data: {DATA.employees.length.toLocaleString('en-US')} employees,{' '}
-            {DATA.employees.reduce((n, e) => n + e.seats.length, 0).toLocaleString('en-US')} AI licences,{' '}
-            {DATA.employees.reduce((n, e) => n + e.shadow.length, 0)} unapproved sign-ups,{' '}
-            {DATA.employees.reduce((n, e) => n + e.alerts.length, 0)} data alerts. Prices are estimates. Data as of {fmtDate(DATA.asOf)}.
+            {SOURCE.kind === 'file' ? `Showing your file “${SOURCE.name}”:` : 'Prototype with sample data:'} {plural(DATA.employees.length, 'employee', 'employees')},{' '}
+            {plural(DATA.employees.reduce((n, e) => n + e.seats.length, 0), 'AI licence', 'AI licences')},{' '}
+            {plural(DATA.employees.reduce((n, e) => n + e.shadow.length, 0), 'unapproved sign-up', 'unapproved sign-ups')},{' '}
+            {plural(DATA.employees.reduce((n, e) => n + e.alerts.length, 0), 'data alert', 'data alerts')}.{SOURCE.kind === 'sample' && ' Prices are estimates.'} Data as of {fmtDate(DATA.asOf)}.
           </p>
         </footer>
       </main>

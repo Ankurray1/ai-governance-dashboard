@@ -44,9 +44,9 @@ TOOLS = [ # name, cat, price, billing, usageData, usageLimit($), seats per dept,
  ("ChatGPT Enterprise","Text & chat",45,"Per seat","Full",None,[300,120,200,120,60,60,40],[255,110,150,80,55,40,22],[0]*7,{}),
  ("Microsoft 365 Copilot","Text & chat",30,"Per seat","Full",None,[100,60,200,200,40,70,30],[60,40,120,110,25,55,15],[0]*7,{"Enterprise Sales":3,"Mid-Market Sales":3,"Customer Success":3,"Accounting":3,"FP&A":3}),
  ("Claude Enterprise","Text & chat",40,"Per seat","Full",None,[220,30,0,0,40,10,0],[205,26,0,0,36,6,0],[0]*7,{"Platform":3,"Payments":3,"Data Engineering":3,"Mobile":2,"Product Management":3,"Product Marketing":3,"Legal":4}),
- ("Synthesia","Video",65,"Seats + usage","Full",2000,[0,25,5,5,0,0,5],[0,22,3,4,0,0,4],[0,1.2,0.1,0.2,0,0,0.1],{"Content & Social":5,"Brand":3,"Enablement":2,"Learning & Development":5,"Customer Success":3,"Solutions Engineering":3}),
- ("Runway","Video",35,"Seats + usage","Full",1800,[0,22,0,0,8,0,0],[0,20,0,0,7,0,0],[0,1.5,0,0,0.3,0,0],{"Content & Social":5,"Brand":4,"UX Design":3}),
- ("ElevenLabs","Voice",22,"Seats + usage","Full",1500,[0,15,0,8,2,0,0],[0,14,0,8,2,0,0],[0,0.9,0,0.4,0.1,0,0],{"Content & Social":5,"Support Ops":5,"UX Research":3}),
+# ("Synthesia","Video",65,"Seats + usage","Full",2000,[0,25,5,5,0,0,5],[0,22,3,4,0,0,4],[0,1.2,0.1,0.2,0,0,0.1],{"Content & Social":5,"Brand":3,"Enablement":2,"Learning & Development":5,"Customer Success":3,"Solutions Engineering":3}),  # removed 15 Nov 2026: no pay-per-use tools
+# ("Runway","Video",35,"Seats + usage","Full",1800,[0,22,0,0,8,0,0],[0,20,0,0,7,0,0],[0,1.5,0,0,0.3,0,0],{"Content & Social":5,"Brand":4,"UX Design":3}),  # removed 15 Nov 2026: no pay-per-use tools
+# ("ElevenLabs","Voice",22,"Seats + usage","Full",1500,[0,15,0,8,2,0,0],[0,14,0,8,2,0,0],[0,0.9,0,0.4,0.1,0,0],{"Content & Social":5,"Support Ops":5,"UX Research":3}),  # removed 15 Nov 2026: no pay-per-use tools
  ("Otter.ai","Voice",20,"Per seat","Full",None,[40,40,180,100,10,10,20],[20,30,140,60,6,8,12],[0]*7,{"Enterprise Sales":3,"Mid-Market Sales":3,"Customer Success":4,"Talent Acquisition":4,"UX Research":4}),
  ("Midjourney","Image",60,"Per seat","Invoice only",None,[0,35,0,0,15,0,0],None,[0]*7,{"Brand":5,"Content & Social":4,"UX Design":4}),
  ("Adobe Firefly","Image",30,"Per seat","Full",None,[0,60,10,0,40,0,10],[0,48,6,0,30,0,4],[0]*7,{"Brand":4,"Content & Social":4,"UX Design":4,"Design Systems":4}),
@@ -57,7 +57,7 @@ SHADOW = [ # name, cat, found, alt, monthly cost, per dept, team weights
  ("Claude Pro (personal plan)","Text","Expense claim","Claude Enterprise",20,[14,3,0,0,4,0,0],{"QA & Automation":3,"Infrastructure":3,"Security Engineering":2}),
  ("Leonardo.ai","Image","Work-email sign-up","Adobe Firefly",0,[0,9,0,0,5,0,0],{"Brand":3,"Content & Social":3}),
  ("DeepSeek","Text","Work-email sign-up","ChatGPT Enterprise (DeepSeek is blocked)",0,[9,2,1,0,1,0,0],{}),
- ("HeyGen","Video","Work-email sign-up","Synthesia",0,[0,7,2,0,1,0,1],{"Content & Social":4}),
+ ("HeyGen","Video","Work-email sign-up","None approved yet",0,[0,7,2,0,1,0,1],{"Content & Social":4}),
  ("Suno","Voice","Expense claim","None approved yet",10,[0,4,0,0,0,0,0],{"Content & Social":4,"Events":3}),
 ]
 ALERTS = [("Customer personal data",[2,5,9,6,0,1,0]),("Financial data",[0,1,2,0,0,5,1]),("Passwords & access keys",[5,0,0,0,1,0,0])]

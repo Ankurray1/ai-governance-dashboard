@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ADOPTION_TARGET, SHADOW_BENCHMARK, STATUS_LABEL, usd, View } from '../data/model';
 import { FEATURES } from '../data/sources';
 import { IconBadge } from './Icon';
+import { plural } from '../data/csvImport';
 import { DotGrid } from './InfoCard';
 import FlipModal, { Formula, Why } from './FlipModal';
 
@@ -23,8 +24,7 @@ export default function KpiRow({ view }: { view: View }) {
   const fmt = (n: number) => n.toLocaleString('en-US');
 
   const usedPct = Math.round(kpi.usedPct);
-  const seatW = budgetMode ? Math.min((kpi.seatPart / kpi.budget) * 100, 100) : (kpi.seatPart / (kpi.spent || 1)) * 100;
-  const useW = budgetMode ? Math.max(Math.min(kpi.usedPct, 100) - seatW, 0) : 100 - seatW;
+  const usedW = budgetMode ? Math.min(kpi.usedPct, 100) : 100;
   const left = Math.max(kpi.budget - kpi.spent, 0);
 
   const adoptionPct = Math.round((facts.activePeople / Math.max(facts.staff, 1)) * 100);
@@ -52,13 +52,11 @@ export default function KpiRow({ view }: { view: View }) {
         </div>
 
         <div className="stack-bar" role="img" aria-label={`${usedPct}% of the monthly budget used`}>
-          <span className={`seg seat ${st}`} style={{ width: `${seatW}%` }} />
-          <span className={`seg use ${st}`} style={{ width: `${useW}%` }} />
+          <span className={`seg seat ${st}`} style={{ width: `${usedW}%` }} />
         </div>
 
         <div className="legend-row">
-          <span><i className={`key seat ${st}`} />Licences <strong>{usd(kpi.seatPart)}</strong></span>
-          <span><i className={`key use ${st}`} />Pay-per-use <strong>{usd(kpi.usagePart)}</strong></span>
+          <span><i className={`key seat ${st}`} />Spent on licences <strong>{usd(kpi.spent)}</strong></span>
           {budgetMode && <span><i className="key left" />Left this month <strong>{usd(left)}</strong></span>}
         </div>
       </section>
@@ -88,7 +86,7 @@ export default function KpiRow({ view }: { view: View }) {
             <span className="fill shadow" style={{ width: `${(shadowPct / 30) * 100}%` }} />
             <i className="target-tick" style={{ left: `${(SHADOW_BENCHMARK / 30) * 100}%` }} title={`${SHADOW_BENCHMARK}% is serious`} />
           </div>
-          <span className="caption">{facts.shadowPeople} people · over {SHADOW_BENCHMARK}% is serious</span>
+          <span className="caption">{plural(facts.shadowPeople, 'person', 'people')} · over {SHADOW_BENCHMARK}% is serious</span>
         </div>
 
         <div className="card kpi">
@@ -106,11 +104,8 @@ export default function KpiRow({ view }: { view: View }) {
 
       {/* ── "i" pop-ups ── */}
       <FlipModal isOpen={popup === 'spend'} onClose={close} title="AI spend this month vs budget" data={FEATURES.spend}>
-        <p className="modal-text">Everything the company spent on approved AI tools this month, against the monthly budget Finance set.</p>
+        <p className="modal-text">Everything the company spent on approved AI tools this month, against the monthly budget Finance set. All of it is licences: a fixed monthly price per person.</p>
         <Formula a={[usd(kpi.spent), 'spent so far']} op="÷" b={[usd(kpi.budget), 'monthly budget']} result={[`${usedPct}%`, 'used']} />
-        <p className="modal-text small-text">
-          <strong>Licences</strong> are a fixed monthly price per person. <strong>Pay-per-use</strong> grows with use (video and voice tools).
-        </p>
         <Why>If spend passes the budget, someone has to approve the extra cost or cut back before the bill arrives.</Why>
       </FlipModal>
 

@@ -8,8 +8,7 @@ import FlipModal, { Why } from './FlipModal';
 
 interface Props { view: View; filters: Filters; onTool: (i: number) => void }
 
-// One compact card per approved tool, problems first. Each card shows the one limit that
-// matters for that tool: its spending cap (pay-per-use) or the licences we bought.
+// One compact card per approved tool, problems first: licences bought vs licences used.
 export default function ToolsTable({ view, filters, onTool }: Props) {
   const [popup, setPopup] = useState(false);
   const rows = view.toolRows;
@@ -37,10 +36,10 @@ export default function ToolsTable({ view, filters, onTool }: Props) {
           </button>
         </div>
       </div>
-      <p className="sec-sub">Is each tool within its limit? Problems first.</p>
+      <p className="sec-sub">Are the licences we bought being used? Problems first.</p>
 
       <Carousel count={rows.length} noun="tool" perView={4}>
-        {rows.map(({ ti, t, a, kind, status, tone, pct, capUsed }) => {
+        {rows.map(({ ti, t, a, kind, status, tone, pct }) => {
           const on = filters.tool === ti;
           return (
             <button key={t.name} type="button" className={`mini-card tool tone-${tone} ${on ? 'on' : ''}`} onClick={() => onTool(ti)} aria-pressed={on}>
@@ -49,7 +48,6 @@ export default function ToolsTable({ view, filters, onTool }: Props) {
               </span>
               <span className={`status ${tone}`}>{status}</span>
               <span className="mc-metric">
-                {kind === 'cap' && <>Spending cap: <strong>{usd(capUsed)}</strong> of {usd(t.usageLimit ?? 0)}</>}
                 {kind === 'seats' && <>Licences in use: <strong>{a.active}</strong> of {a.seats}</>}
                 {kind === 'invoice' && <>Licences bought: <strong>{a.seats}</strong> · use not reported</>}
               </span>
@@ -67,13 +65,12 @@ export default function ToolsTable({ view, filters, onTool }: Props) {
       </Carousel>
 
       <FlipModal isOpen={popup} onClose={() => setPopup(false)} title="Approved AI tools" eyebrow="About this list" data={FEATURES.tools}>
-        <p className="modal-text">Every AI tool the company pays for, each checked against its own limit. Tools that need attention come first.</p>
+        <p className="modal-text">Every AI tool the company pays for, checked on how many of its licences are really used. Tools that need attention come first.</p>
         <ul className="read-list">
-          <li><span><strong>Spending cap:</strong> pay-per-use tools (video and voice) have a monthly cap. “Runs out before month-end” means it will hit the cap at today’s pace.</span></li>
           <li><span><strong>Licences in use:</strong> people who used it in the last 30 days out of licences bought. Under 70% means “Underused”.</span></li>
           <li><span><strong>Held by leavers:</strong> licences still assigned to people who have left. These can be cancelled now.</span></li>
         </ul>
-        <Why>Unused licences and leavers’ licences are the quickest money to save. Caps stop pay-per-use bills from running away.</Why>
+        <Why>Unused licences and leavers’ licences are the quickest money to save.</Why>
         <p className="modal-note">Midjourney only sends a bill, so we show the licences bought, not who uses them.</p>
       </FlipModal>
     </section>

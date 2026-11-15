@@ -57,7 +57,7 @@ Deliberately left out: token or prompt counts (meaningless to a CFO), a headline
 | `sensitive_data_alerts.csv` | 38 | Data-protection alerts from the enterprise chat tools' audit logs |
 | `department_budgets.csv` | 7 | Monthly AI budget and owner per department |
 
-Assumed tool stack: ChatGPT Enterprise, Microsoft 365 Copilot, Claude Enterprise (text & chat) · Synthesia, Runway (video) · ElevenLabs, Otter.ai (voice) · Midjourney, Adobe Firefly (image). Prices are assumptions. Midjourney is treated as "invoice only" because it doesn't report per-user usage.
+Assumed tool stack: ChatGPT Enterprise, Microsoft 365 Copilot, Claude Enterprise (text & chat) · Otter.ai (voice) · Midjourney, Adobe Firefly (image). Prices are assumptions. Midjourney is treated as "invoice only" because it doesn't report per-user usage.
 
 `scripts/generate_mock_data.py` regenerates the dataset (fixed random seed, so output is identical each run).
 

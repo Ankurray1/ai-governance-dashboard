@@ -23,40 +23,52 @@ export interface Employee {
   cost: number; hasUnused: boolean; isLeaver: boolean; idle: number; search: string;
 }
 
-interface RawData {
+export interface RawData {
   asOf: string; company: string; depts: Dept[]; locations: string[]; tools: Tool[]; shadowTools: ShadowTool[]; alertTypes: string[];
   emp: [string, string, string, number, number, string, string, number, number, 'Active' | 'Left', string | null, string][];
-  lic: [number, number, string | null, number, SeatStatus][];
+  // licence: person, tool, last used (null = never), extra usage cost, status, optional monthly cost for this licence
+  lic: ([number, number, string | null, number, SeatStatus] | [number, number, string | null, number, SeatStatus, number])[];
   shadow: [number, number, string][];
   alerts: [string, number, number, number, string][];
 }
 
-// ---------- Prepare once ----------
-const R = raw as unknown as RawData;
-const asOf = Date.parse(R.asOf + 'T00:00:00Z');
-export const DATA = {
-  asOf: R.asOf, company: R.company, depts: R.depts, locations: R.locations, tools: R.tools,
-  shadowTools: R.shadowTools, alertTypes: R.alertTypes,
-  employees: R.emp.map((r, i): Employee => ({
-    i, id: r[0], name: r[1], email: r[2], dept: r[3], team: R.depts[r[3]].teams[r[4]], title: r[5], level: r[6],
-    mgr: r[7], loc: r[8], status: r[9], leave: r[10], start: r[11], seats: [], shadow: [], alerts: [],
-    cost: 0, hasUnused: false, isLeaver: false, idle: -1,
-    search: `${r[1]} ${r[2]} ${R.depts[r[3]].teams[r[4]]} ${r[5]}`.toLowerCase(),
-  })),
-};
-R.lic.forEach(([e, t, date, usage, status]) => {
-  const days = date ? Math.round((asOf - Date.parse(date + 'T00:00:00Z')) / 86400000) : null;
-  DATA.employees[e].seats.push({ tool: t, days, usage, status, cost: R.tools[t].price + usage });
-});
-R.shadow.forEach(([e, t, first]) => DATA.employees[e].shadow.push({ tool: t, first }));
-R.alerts.forEach(([date, e, tool, type, status]) => DATA.employees[e].alerts.push({ date, tool, type, status }));
-DATA.employees.forEach((e) => {
-  e.cost = e.seats.reduce((s, x) => s + x.cost, 0);
-  e.hasUnused = e.seats.some((x) => x.status === 'inactive' || x.status === 'never');
-  e.isLeaver = e.status === 'Left' && e.seats.length > 0;
-  const known = e.seats.filter((x) => x.status !== 'unknown').map((x) => (x.days === null ? 999 : x.days));
-  e.idle = known.length ? Math.min(...known) : -1;
-});
+// ---------- Build the in-memory dataset (sample by default, or an uploaded CSV) ----------
+function buildData(R: RawData) {
+  const asOf = Date.parse(R.asOf + 'T00:00:00Z');
+  const data = {
+    asOf: R.asOf, company: R.company, depts: R.depts, locations: R.locations, tools: R.tools,
+    shadowTools: R.shadowTools, alertTypes: R.alertTypes,
+    employees: R.emp.map((r, i): Employee => ({
+      i, id: r[0], name: r[1], email: r[2], dept: r[3], team: R.depts[r[3]].teams[r[4]] ?? R.depts[r[3]].name, title: r[5], level: r[6],
+      mgr: r[7], loc: r[8], status: r[9], leave: r[10], start: r[11], seats: [], shadow: [], alerts: [],
+      cost: 0, hasUnused: false, isLeaver: false, idle: -1,
+      search: `${r[1]} ${r[2]} ${r[5]}`.toLowerCase(),
+    })),
+  };
+  R.lic.forEach(([e, t, date, usage, status, cost]) => {
+    const days = date ? Math.round((asOf - Date.parse(date + 'T00:00:00Z')) / 86400000) : null;
+    data.employees[e].seats.push({ tool: t, days, usage, status, cost: cost ?? R.tools[t].price + usage });
+  });
+  R.shadow.forEach(([e, t, first]) => data.employees[e].shadow.push({ tool: t, first }));
+  R.alerts.forEach(([date, e, tool, type, status]) => data.employees[e].alerts.push({ date, tool, type, status }));
+  data.employees.forEach((e) => {
+    e.cost = e.seats.reduce((s, x) => s + x.cost, 0);
+    e.hasUnused = e.seats.some((x) => x.status === 'inactive' || x.status === 'never');
+    e.isLeaver = e.status === 'Left' && e.seats.length > 0;
+    const known = e.seats.filter((x) => x.status !== 'unknown').map((x) => (x.days === null ? 999 : x.days));
+    e.idle = known.length ? Math.min(...known) : -1;
+  });
+  return data;
+}
+
+export const SAMPLE = raw as unknown as RawData;
+// `let` so an uploaded file can replace it; every import sees the current dataset.
+export let DATA = buildData(SAMPLE);
+export let SOURCE: { kind: 'sample' | 'file'; name: string } = { kind: 'sample', name: 'Sample data' };
+export function loadDataset(R: RawData, source: typeof SOURCE) {
+  DATA = buildData(R);
+  SOURCE = source;
+}
 
 // ---------- Filters ----------
 export type Flag = 'all' | 'unused' | 'leaver' | 'shadow' | 'alert' | 'none';
@@ -78,7 +90,6 @@ export const STATUS_LABEL: Record<Status, string> = { ok: 'On track', near: 'Nea
 // Targets shown next to the headline rates. Set by leadership in a real build; assumed here.
 export const ADOPTION_TARGET = 70; // % of employees actively using approved AI
 export const SHADOW_BENCHMARK = 15; // % of employees on unapproved AI above which the blind spot is serious
-const FORECAST_FACTOR = 30 / 20; // day 20 of 30: usage-based spend grows, seats are fixed
 
 const shadowCat = (c: string) => (c === 'Text' ? 'Text & chat' : c);
 
@@ -97,14 +108,12 @@ export function compute(f: Filters) {
   const scopeName = scopeParts.length ? scopeParts.join(' · ') : 'Whole company';
 
   // department money (respects location / level / tool-type filters)
-  const dSeat = depts.map(() => 0), dUse = depts.map(() => 0);
+  const dSpend = depts.map(() => 0);
   const toolAgg = tools.map(() => ({ seats: 0, active: 0, unused: 0, leavers: 0, cost: 0 }));
-  const companyUsage = tools.map(() => 0);
   const scope: Employee[] = [];
   employees.forEach((e) => {
-    e.seats.forEach((s) => { companyUsage[s.tool] += s.usage; });
     if (!otherOk(e)) return;
-    e.seats.forEach((s) => { if (catOk(s.tool)) { dSeat[e.dept] += tools[s.tool].price; dUse[e.dept] += s.usage; } });
+    e.seats.forEach((s) => { if (catOk(s.tool)) dSpend[e.dept] += s.cost; });
     if (f.dept >= 0 && e.dept !== f.dept) return;
     scope.push(e);
     e.seats.forEach((s) => {
@@ -118,24 +127,22 @@ export function compute(f: Filters) {
   });
 
   const idx = f.dept < 0 ? depts.map((_, i) => i) : [f.dept];
-  const seatPart = idx.reduce((s, i) => s + dSeat[i], 0);
-  const usagePart = idx.reduce((s, i) => s + dUse[i], 0);
+  // All AI spend is licences: a fixed monthly price per person (no pay-per-use tools).
   const budget = idx.reduce((s, i) => s + depts[i].budget, 0);
-  const spent = seatPart + usagePart;
-  const forecast = seatPart + usagePart * FORECAST_FACTOR;
-  const overCount = depts.filter((d, i) => dSeat[i] + dUse[i] > d.budget).length;
+  const spent = idx.reduce((s, i) => s + dSpend[i], 0);
+  const overCount = depts.filter((d, i) => dSpend[i] > d.budget).length;
 
   const kpi = {
-    spent, seatPart, usagePart, budget, forecast, overCount, people: scope.length,
-    usedPct: (spent / budget) * 100, forecastPct: (forecast / budget) * 100,
+    spent, budget, overCount, people: scope.length,
+    usedPct: (spent / budget) * 100,
     status: statusOf((spent / budget) * 100),
   };
 
   const deptRows = depts.map((d, i) => {
-    const sp = dSeat[i] + dUse[i], ex = dSeat[i] + dUse[i] * FORECAST_FACTOR;
-    return { i, name: d.name, owner: d.owner, budget: d.budget, spent: sp, expected: ex, pct: (ex / d.budget) * 100, status: statusOf((ex / d.budget) * 100) };
+    const sp = dSpend[i];
+    return { i, name: d.name, owner: d.owner, budget: d.budget, spent: sp, pct: (sp / d.budget) * 100, status: statusOf((sp / d.budget) * 100) };
   });
-  const maxExpected = Math.max(...deptRows.map((r) => r.expected));
+  const maxSpent = Math.max(...deptRows.map((r) => r.spent));
 
   // top tools
   const scopeCost = toolAgg.reduce((s, a) => s + a.cost, 0) || 1;
@@ -148,21 +155,15 @@ export function compute(f: Filters) {
   // tool rows with limit status
   const toolRows = tools.map((t, ti) => {
     const a = toolAgg[ti];
-    // Each tool is judged on the limit that matters for it: a usage cap (pay-per-use), or seats bought.
-    let kind: 'cap' | 'seats' | 'invoice' = 'seats', status = 'On track', tone: 'ok' | 'warn' | 'bad' | 'muted' = 'ok', rank = 3;
-    let pct = a.seats ? (a.active / a.seats) * 100 : 0;
-    const capUsed = companyUsage[ti];
-    if (t.usageLimit) {
-      kind = 'cap';
-      pct = (capUsed / t.usageLimit) * 100;
-      if (pct >= 100) { status = 'Limit reached'; tone = 'bad'; rank = 0; }
-      else if (pct * FORECAST_FACTOR > 100) { status = 'Runs out before month-end'; tone = 'warn'; rank = 1; }
-    } else if (t.usageData !== 'Full') {
+    // Each tool is judged on its licences: how many bought vs how many people used it.
+    let kind: 'seats' | 'invoice' = 'seats', status = 'On track', tone: 'ok' | 'warn' | 'bad' | 'muted' = 'ok', rank = 3;
+    const pct = a.seats ? (a.active / a.seats) * 100 : 0;
+    if (t.usageData !== 'Full') {
       kind = 'invoice'; status = 'No usage data'; tone = 'muted'; rank = 2;
     } else if (a.seats && pct < 70) {
       status = 'Underused'; tone = 'warn'; rank = 1;
     }
-    return { ti, t, a, kind, status, tone, rank, pct, capUsed };
+    return { ti, t, a, kind, status, tone, rank, pct };
   }).filter((r) => catOk(r.ti) && (r.a.seats > 0 || (f.dept < 0 && f.loc < 0 && f.level === 'all')))
     .sort((x, y) => x.rank - y.rank || y.a.cost - x.a.cost);
 
@@ -172,7 +173,7 @@ export function compute(f: Filters) {
   const alertCounts = alertTypes.map(() => 0);
   const alertRows: { e: Employee; a: Employee['alerts'][number] }[] = [];
   scope.forEach((e) => {
-    e.seats.forEach((s) => { if (catOk(s.tool) && (s.status === 'inactive' || s.status === 'never')) unusedCost += tools[s.tool].price; });
+    e.seats.forEach((s) => { if (catOk(s.tool) && (s.status === 'inactive' || s.status === 'never')) unusedCost += s.cost; });
     if (e.hasUnused) unusedPeople++;
     if (e.status === 'Active' && e.seats.some((s) => catOk(s.tool) && s.status === 'active')) activePeople++;
     if (e.isLeaver) leavers++;
@@ -205,7 +206,7 @@ export function compute(f: Filters) {
   else people.sort((a, b) => b.cost - a.cost);
 
   return {
-    scopeName, budgetMode, kpi, deptRows, maxExpected, topTools, toolRows,
+    scopeName, budgetMode, kpi, deptRows, maxSpent, topTools, toolRows,
     facts: {
       unusedPeople, unusedCost, leavers, shadowPeople, alertPeople,
       // second-row headline metrics (see the "i" explainers on screen)

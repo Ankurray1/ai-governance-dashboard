@@ -14,7 +14,7 @@ Author: Ankur (Product Manager). The reviewer is evaluating product judgment, si
 
 ## Golden rules (do not break)
 - **Simple, plain language.** No jargon on screen. Money and people, never tokens or prompts. Use these labels:
-  "Spend with no owner" (not unattributed spend) · "Fixed vs pay-per-use" (not seat vs consumption) · "Approved / unapproved" · "Unused licences/seats" · "Expected by month-end" (not forecast to period end).
+  "Spend with no owner" (not unattributed spend) · "Approved / unapproved" · "Unused licences/seats" · "Expected by month-end" (not forecast to period end).
 - **Every element must trace back to the brief's three questions:** Who is using what? How much does it cost? Is usage within approved limits? (+ Shadow AI). If it doesn't answer one, cut it.
 - **Never show data we couldn't really get.** See "What we can and can't see" below. Claiming visibility we don't have is the worst mistake this project can make.
 - **Do not copy CloudEagle.ai (or any company's) design or branding.** Use generic SaaS-admin patterns in our own original look. The folder name is just where the portfolio lives.
@@ -26,7 +26,7 @@ Author: Ankur (Product Manager). The reviewer is evaluating product judgment, si
 - One screen. Other hierarchy levels are served by **filters** (department, location, level), not extra screens.
 - Hierarchy used everywhere (universal across company sizes; in a startup one person holds several roles):
   - L1 CEO · L2 CTO / CFO / COO · L3 Department heads / VPs · L4 Managers / Team leads · L5 Employees (+ AI agents, owned by an L4 — future scope)
-- "Limit" = **monthly AI budget per department** (set by Finance) + **approved seats per tool** + **usage caps on pay-per-use tools** (video/voice). Budgets exist per department only → when filtering by location/level/tool type, hide budget lines and show spend only.
+- "Limit" = **monthly AI budget per department** (set by Finance) + **approved seats per tool**. (No pay-per-use tools since 15 Nov 2026: all spend is licences.) Budgets exist per department only → when filtering by location/level/tool type, hide budget lines and show spend only.
 
 ## What we can and can't see (Shadow AI honesty)
 | How someone uses an unapproved tool | Visible? | How |
@@ -50,16 +50,16 @@ Known gaps to state openly: personal accounts on personal devices are invisible;
 
 ## Part 3 — the three charts (current answer)
 1. **Spend vs budget by department** (bar per dept: spent, expected by month-end, budget line) → *who* is over/near their limit.
-2. **This month's spend vs the limit** (spent so far split fixed vs pay-per-use, expected month-end) → *when/whether* we cross.
+2. **This month's spend vs the limit** (spent so far on licences vs the monthly budget) → *when/whether* we cross.
 3. **AI tools by people using them, approved vs unapproved** (with cost where known, and how unapproved ones were found) → *what* people use and what we don't control.
 Rejected: pie of vendors (shows split, not problems), token/prompt counts, active-users trend alone (vanity), agents/compliance/ROI (later).
 
 ## Assumed company + tool stack (mock)
 Acme Corp, 2,400 employees, offices Bengaluru 1,103 · Pune 450 · London 379 · New York 299 · Singapore 169. As-of date 20 Nov 2026 (day 20 of 30).
 Departments (headcount, monthly AI budget): Engineering 700 $25k · Marketing 260 $18k · Sales 520 $22k · Support 480 $18k · Product & Design 160 $10k · Finance & Ops 180 $7k · HR 100 $5k → $105k.
-Approved tools (assumed $/seat/mo): Text & chat — ChatGPT Enterprise $45, Microsoft 365 Copilot $30, Claude Enterprise $40 · Video — Synthesia $65 (+usage, cap $2k), Runway $35 (+usage, cap $1.8k) · Voice — ElevenLabs $22 (+usage, cap $1.5k), Otter.ai $20 · Image — Midjourney $60 (**invoice only, no usage data**), Adobe Firefly $30.
+Approved tools (assumed $/seat/mo): Text & chat — ChatGPT Enterprise $45, Microsoft 365 Copilot $30, Claude Enterprise $40 · Voice — Otter.ai $20 · Image — Midjourney $60 (**invoice only, no usage data**), Adobe Firefly $30.
 Unapproved found: Perplexity, Fireflies.ai, Claude Pro (personal, expensed), Leonardo.ai, DeepSeek, HeyGen, Suno.
-Headline mock results: spent $97,100 of $105,000 (92%), expected $99,500; Engineering (104%) and Marketing (118%) over; Runway usage cap reached; 18 leavers still hold seats; 174 people on unauthorised tools; 38 data alerts.
+Headline mock results: spent $88,100 of $105,000 (84%), all licences; Engineering over (104%), Sales near (86%); adoption 57%; 174 people on unapproved tools (7.3%); 38 data alerts, 26 to review. Synthesia, Runway and ElevenLabs (pay-per-use) were removed on 15 Nov 2026 at Ankur's request; the generator has them commented out.
 
 ## Tech
 - React 18 + TypeScript + Vite, plain CSS (tokens in `src/styles.css`), no chart library (bars are divs).
@@ -70,6 +70,7 @@ Headline mock results: spent $97,100 of $105,000 (92%), expected $99,500; Engine
 - `src/data/model.ts` — ALL calculations. `compute(filters)` returns everything the screen shows. Keep logic here; components only render.
 - `src/data/acme_ai_governance.json` — compact dataset the app imports (generated).
 - `src/components/` — PageHeader, KpiRow (spend vs budget + 3 cards), Budgets (dept chart + most-used tools), ShadowAI, DataAlerts, ToolsTable, Carousel (shared slider), FlipModal (the "i" pop-up), Icon, InfoCard (dot grid).
+- `src/data/csvImport.ts` + `src/components/UploadData.tsx` — "Upload your data": one CSV, one row per record (`record_type` = department / person / licence / unapproved / alert). Template + export of the data on screen; every row checked before anything changes; read in the browser only. `loadDataset()` in model.ts swaps the dataset. The sample exported and re-uploaded gives identical numbers.
 - `data/csv/` — human-readable dataset (employees, ai_licences, unauthorised_ai, sensitive_data_alerts, department_budgets).
 - `scripts/generate_mock_data.py` — regenerates dataset (seed 20261120). Run it from the project root (`python scripts/generate_mock_data.py`); it overwrites `src/data/acme_ai_governance.json` and `data/csv/*.csv`.
 

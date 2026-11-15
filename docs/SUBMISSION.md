@@ -6,12 +6,14 @@
 One screen: <https://ankurray1.github.io/ai-governance-dashboard/>
 
 It answers the brief's questions in order:
-1. **How much does it cost?** AI spend this month vs budget ($97,100 of $105,000, 92% used), split into licences and pay-per-use.
-2. **Who is using what?** AI adoption (58% of employees used approved AI in the last 30 days) and the most-used tools.
-3. **Is usage within approved limits?** Spend vs budget by department, and each approved tool against its own limit (licences or spending cap).
+1. **How much does it cost?** AI spend this month vs budget ($88,100 of $105,000, 84% used), all on licences.
+2. **Who is using what?** AI adoption (57% of employees used approved AI in the last 30 days) and the most-used tools.
+3. **Is usage within approved limits?** Spend vs budget by department, and each approved tool's licences bought vs used.
 4. **Shadow AI.** Unapproved AI use (at least 7.3% of employees, 174 people on 7 tools) and sensitive data alerts (26 of 38 still to review).
 
 Every card has an **"i"** that explains the number, how it's worked out, and where the data comes from.
+
+**Upload your data:** before any API is connected, a company can download a one-file CSV template, fill it in (departments, people, licences, unapproved tools, alerts) and upload it to see the dashboard with its own numbers. The file is checked row by row first and never leaves the browser.
 
 ## Part 2: API & data source plan
 
@@ -24,7 +26,7 @@ Every card has an **"i"** that explains the number, how it's worked out, and whe
 | 5 | Spend vs budget by department | Vendor billing APIs + HR system + budgets set by Finance | Which team spent it, and its budget |
 | 6 | Unapproved AI tools | Sign-in logs + work calendar access + expense claims | Which tools, and how we found them |
 | 7 | Sensitive data alerts | Data-protection tool (Microsoft Purview) + HR system | What was shared, by whom, in which tool |
-| 8 | Approved AI tools | Vendor admin APIs + invoices | Licences bought vs used, and spending caps |
+| 8 | Approved AI tools | Vendor admin APIs + invoices | Licences bought vs used |
 
 **Note:** personal AI accounts on personal devices can't be seen.
 

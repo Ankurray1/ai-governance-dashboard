@@ -8,6 +8,7 @@ const PATHS: Record<string, string> = {
   grid: 'M4 4h7v7H4zm9 0h7v7h-7zM4 13h7v7H4zm9 0h7v7h-7z',
   person: 'M20 21v-1a5 5 0 0 0-5-5H9a5 5 0 0 0-5 5v1M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
   download: 'M12 4v11m0 0l-4-4m4 4l4-4M4 20h16',
+  upload: 'M12 16V5m0 0l-4 4m4-4l4 4M4 20h16',
   bolt: 'M13 2L4 14h7l-1 8 9-12h-7z',
   piggy: 'M19 10c0-3.3-3.1-6-7-6S5 6.7 5 10c0 1.9 1 3.6 2.6 4.7L7 19h3l.5-2h3l.5 2h3l-.6-4.3A5.8 5.8 0 0 0 19 10zM9 9h.01M2 10a3 3 0 0 0 3 3',
 };

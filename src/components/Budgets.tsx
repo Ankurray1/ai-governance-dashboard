@@ -12,7 +12,7 @@ interface Props { view: View; filters: Filters; onDept: (i: number) => void }
 
 export default function Budgets({ view, filters, onDept }: Props) {
   const [popup, setPopup] = useState(false);
-  const { deptRows, budgetMode, maxExpected, topTools, scopeName } = view;
+  const { deptRows, budgetMode, maxSpent, topTools, scopeName } = view;
   const w = (p: number) => `${(Math.min(p, SCALE) / SCALE) * 100}%`;
   const maxA = Math.max(...topTools.map((y) => y.a.active), 1);
 
@@ -27,7 +27,6 @@ export default function Budgets({ view, filters, onDept }: Props) {
         <div className="sec-actions">
           <div className="legend">
             <span><i className="key seat ok" />Spent so far</span>
-            <span><i className="key use ok" />Expected by month-end</span>
             {budgetMode && <span><i className="key line" />Budget</span>}
           </div>
           <button type="button" className="info-btn" onClick={() => setPopup(true)} aria-label="What is spend vs budget by department?">
@@ -42,8 +41,7 @@ export default function Budgets({ view, filters, onDept }: Props) {
           <div className="dept-chart">
             {deptRows.map((d) => {
               const st = budgetMode ? d.status : 'ok';
-              const spP = budgetMode ? (d.spent / d.budget) * 100 : (d.spent / maxExpected) * SCALE * 0.7;
-              const exP = budgetMode ? d.pct : (d.expected / maxExpected) * SCALE * 0.7;
+              const spP = budgetMode ? d.pct : (d.spent / maxSpent) * SCALE * 0.7;
               const on = filters.dept === d.i;
               return (
                 <div key={d.name} className={`dept-row ${filters.dept >= 0 && !on ? 'dim' : ''}`}>
@@ -52,14 +50,13 @@ export default function Budgets({ view, filters, onDept }: Props) {
                     <span className="sub">{d.owner}</span>
                   </button>
                   <div className="track">
-                    <div className={`bar use ${st}`} style={{ width: w(exP) }} />
                     <div className={`bar seat ${st}`} style={{ width: w(spP) }} />
                     {budgetMode && <div className="budget-line" style={{ left: `${LINE}%` }} />}
                   </div>
                   <div className="dept-val">
-                    <strong>{budgetMode ? `${usd(d.expected)} / ${usd(d.budget)}` : `${usd(d.expected)} expected`}</strong>
+                    <strong>{budgetMode ? `${usd(d.spent)} / ${usd(d.budget)}` : `${usd(d.spent)} spent`}</strong>
                     <span className={`pill ${budgetMode ? st : 'neutral'}`}>
-                      {budgetMode ? `${STATUS_LABEL[st]} · ${Math.round(d.pct)}%` : `${usd(d.spent)} so far`}
+                      {budgetMode ? `${STATUS_LABEL[st]} · ${Math.round(d.pct)}%` : 'Spend only'}
                     </span>
                   </div>
                 </div>
@@ -94,8 +91,7 @@ export default function Budgets({ view, filters, onDept }: Props) {
       <FlipModal isOpen={popup} onClose={() => setPopup(false)} title="Spend vs budget by department" eyebrow="About this chart" data={FEATURES.departments}>
         <p className="modal-text">Each department’s AI spend against the monthly budget Finance gave it, with the person who owns that budget.</p>
         <ul className="read-list">
-          <li><i className="key seat ok" /><span><strong>Dark bar:</strong> spent so far this month</span></li>
-          <li><i className="key use ok" /><span><strong>Light bar:</strong> expected by month-end if use carries on at today’s pace</span></li>
+          <li><i className="key seat ok" /><span><strong>Bar:</strong> spent on licences this month</span></li>
           <li><i className="key line" /><span><strong>Black line:</strong> the department’s budget</span></li>
         </ul>
         <Why>It shows who is over budget and whom to talk to, before the month’s bill arrives.</Why>

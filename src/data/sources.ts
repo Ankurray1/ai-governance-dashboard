@@ -23,7 +23,7 @@ export const FEATURES = {
   departments: { feature: 'Spend vs budget by department', purpose: 'Which team spent it, and its budget', sources: [VENDOR_BILLING, HR, BUDGETS] },
   shadowTools: { feature: 'Unapproved AI tools', purpose: 'Which tools, and how we found them', sources: [SIGN_INS, CALENDAR, EXPENSES] },
   alerts: { feature: 'Sensitive data alerts', purpose: 'What was shared, by whom, in which tool', sources: [PURVIEW, HR] },
-  tools: { feature: 'Approved AI tools', purpose: 'Licences bought vs used, and spending caps', sources: [VENDOR_ADMIN, INVOICES] },
+  tools: { feature: 'Approved AI tools', purpose: 'Licences bought vs used', sources: [VENDOR_ADMIN, INVOICES] },
 } satisfies Record<string, Feature>;
 
 export const NOTE = 'Personal AI accounts on personal devices can’t be seen.';
