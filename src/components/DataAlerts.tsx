@@ -1,16 +1,18 @@
 import { useState } from 'react';
-import ToolLogo from './ToolLogo';
-import { DATA, fmtDay, View } from '../data/model';
+import { DATA, View } from '../data/model';
 import { FEATURES } from '../data/sources';
 import Icon, { IconBadge } from './Icon';
 import FlipModal, { Why } from './FlipModal';
 
 const csvCell = (v: string) => (/[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v);
 
+// One headline number, then a slim bar per type of data shared (red = still to review).
 export default function DataAlerts({ view }: { view: View }) {
   const [popup, setPopup] = useState(false);
   const { alertCounts, alertRows, scopeName } = view;
   const open = alertRows.filter((r) => r.a.status === 'Open').length;
+  const openByType = DATA.alertTypes.map((_, t) => alertRows.filter((r) => r.a.type === t && r.a.status === 'Open').length);
+  const max = Math.max(...alertCounts, 1);
 
   const download = () => {
     const head = ['Date', 'Name', 'Department', 'What was shared', 'AI tool', 'Status'];
@@ -37,39 +39,38 @@ export default function DataAlerts({ view }: { view: View }) {
           {scopeName !== 'Whole company' && <span className="sec-scope"> · {scopeName}</span>}
         </h2>
         <div className="sec-actions">
-          <button type="button" className="btn btn-sm" onClick={download} disabled={!alertRows.length}>
-            <Icon name="download" size={15} /> Download list
+          <button type="button" className="icon-btn" onClick={download} disabled={!alertRows.length} aria-label="Download the list of alerts (CSV)" title="Download list">
+            <Icon name="download" size={16} />
           </button>
           <button type="button" className="info-btn" onClick={() => setPopup(true)} aria-label="What are sensitive data alerts?">
             <span aria-hidden="true">i</span>
           </button>
         </div>
       </div>
-      <p className="sec-sub">{alertRows.length} times this month sensitive information was shared with approved AI tools · {open} to review.</p>
 
-      <div className="alert-cards">
-        {DATA.alertTypes.map((label, i) => (
-          <div key={label} className="alert-card">
-            <span className="alert-num">{alertCounts[i]}</span>
-            <span className="alert-label">{label}</span>
-          </div>
-        ))}
+      <div className="alert-head">
+        <span className="alert-total">{alertRows.length}</span>
+        <span className="alert-total-label">times sensitive data was shared with approved AI tools this month</span>
+        <span className="pill over">{open} to review</span>
       </div>
 
-      <div className="modal-label">Most recent</div>
-      <ul className="alert-list">
-        {alertRows.slice(0, 4).map(({ e, a }, i) => (
-          <li key={i}>
-            <span className="alert-date">{fmtDay(a.date)}</span>
-            <span className="alert-who">
-              <strong>{e.name} · {DATA.depts[e.dept].name}</strong>
-              <span className="alert-tool"><ToolLogo name={DATA.tools[a.tool].name} size={14} />{DATA.alertTypes[a.type]} in {DATA.tools[a.tool].name}</span>
+      <ul className="type-list">
+        {DATA.alertTypes.map((label, i) => (
+          <li key={label}>
+            <span className="tl-label">{label}</span>
+            <span className="tl-bar">
+              <span className="tl-open" style={{ width: `${(openByType[i] / max) * 100}%` }} />
+              <span className="tl-done" style={{ width: `${((alertCounts[i] - openByType[i]) / max) * 100}%` }} />
             </span>
-            <span className={`pill ${a.status === 'Open' ? 'over' : 'neutral'}`}>{a.status === 'Open' ? 'To review' : 'Checked'}</span>
+            <span className="tl-num">{alertCounts[i]}</span>
           </li>
         ))}
-        {alertRows.length === 0 && <li className="caption">No alerts here.</li>}
       </ul>
+      <div className="tl-legend">
+        <span><i className="tl-key open" />To review</span>
+        <span><i className="tl-key done" />Checked</span>
+        <button type="button" className="link-btn" onClick={download} disabled={!alertRows.length}>Download list</button>
+      </div>
 
       <FlipModal isOpen={popup} onClose={() => setPopup(false)} tone="red" title="Sensitive data alerts" eyebrow="About this list" data={FEATURES.alerts}>
         <p className="modal-text">Times someone shared sensitive information with an <strong>approved</strong> AI tool such as Copilot or ChatGPT Enterprise.</p>

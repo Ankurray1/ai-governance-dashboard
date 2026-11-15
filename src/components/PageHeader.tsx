@@ -1,21 +1,29 @@
 import { DATA } from '../data/model';
 import icon from '../assets/cloudeagle-icon.png';
+import Icon from './Icon';
 
-// Page title + company identity. No filters: this one screen is for one viewer (the executive), company-wide.
+// Light, compact page header. Title and company facts on the left;
+// the CloudEagle.ai logo + name always sit in the top-right corner.
 export default function PageHeader() {
-  const employees = DATA.employees.length.toLocaleString('en-US');
-  const departments = DATA.depts.length;
+  const tools = DATA.tools.length + DATA.shadowTools.length;
   return (
-    <header className="topbar">
-      <div>
-        <h1>AI Governance Dashboard</h1>
-        <p className="muted">
-          {employees} employees · {departments} departments
-        </p>
+    <header className="page-head">
+      <div className="ph-left">
+        <div className="ph-title-row">
+          <h1>AI Governance Dashboard</h1>
+          <span className="ph-tag">Prototype · sample data</span>
+        </div>
+        <p className="ph-sub">Who uses which AI tools, what they cost, and whether we’re within budget.</p>
+        <div className="ph-facts">
+          <span className="ph-fact"><Icon name="person" size={16} /><strong>{DATA.employees.length.toLocaleString('en-US')}</strong> employees</span>
+          <span className="ph-fact"><Icon name="chart" size={16} /><strong>{DATA.depts.length}</strong> departments</span>
+          <span className="ph-fact"><Icon name="grid" size={16} /><strong>{tools}</strong> AI tools tracked</span>
+        </div>
       </div>
-      <div className="company">
-        <img src={icon} alt="" className="company-icon" width={36} height={36} />
-        <span className="company-name">CloudEagle.ai</span>
+
+      <div className="ph-brand">
+        <img src={icon} alt="" width={32} height={32} />
+        <span>CloudEagle.ai</span>
       </div>
     </header>
   );

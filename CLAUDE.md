@@ -18,7 +18,7 @@ Author: Ankur (Product Manager). The reviewer is evaluating product judgment, si
 - **Every element must trace back to the brief's three questions:** Who is using what? How much does it cost? Is usage within approved limits? (+ Shadow AI). If it doesn't answer one, cut it.
 - **Never show data we couldn't really get.** See "What we can and can't see" below. Claiming visibility we don't have is the worst mistake this project can make.
 - **Do not copy CloudEagle.ai (or any company's) design or branding.** Use generic SaaS-admin patterns in our own original look. The folder name is just where the portfolio lives.
-  - **Exception (Ankur's decision, 14 Nov 2026):** the header badge shows CloudEagle.ai's real name and logo icon (`src/assets/cloudeagle-icon.png`). The colour palette is CloudEagle's (blue #2145FF, navy #111B31). On 15 Nov 2026 the layered themes were replaced by one simple design system in `src/styles.css` (Inter, white cards, one section-header pattern). Colour meaning is unchanged. Don't remove the logo or palette without asking.
+  - **Exception (Ankur's decision, 14 Nov 2026):** the header badge shows CloudEagle.ai's real name and logo icon (`src/assets/cloudeagle-icon.png`). The colour palette is CloudEagle's (blue #2145FF, navy #111B31). On 15 Nov 2026 the layered themes were replaced by one simple design system in `src/styles.css` (Inter, white cards, one section-header pattern). Colour meaning is unchanged. Don't remove the logo or palette without asking. **The CloudEagle.ai logo + name always sit in the top-right corner of the header** (Ankur's rule, 15 Nov 2026).
 - Data is mock but must look real and must add up (teams → departments → company).
 
 ## Audience and scope decisions

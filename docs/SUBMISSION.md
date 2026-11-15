@@ -22,7 +22,7 @@ Every card has an **"i"** that explains the number, how it's worked out, and whe
 | 3 | Unapproved AI use | Sign-in logs (Okta / Microsoft Entra) + expense claims | How many people use unapproved AI |
 | 4 | Data alerts to review | Data-protection tool (Microsoft Purview) | Alerts nobody has checked yet |
 | 5 | Spend vs budget by department | Vendor billing APIs + HR system + budgets set by Finance | Which team spent it, and its budget |
-| 6 | Unapproved AI tools | Sign-in logs + work calendar access + expense claims | Which tools, how we found them, what to use instead |
+| 6 | Unapproved AI tools | Sign-in logs + work calendar access + expense claims | Which tools, and how we found them |
 | 7 | Sensitive data alerts | Data-protection tool (Microsoft Purview) + HR system | What was shared, by whom, in which tool |
 | 8 | Approved AI tools | Vendor admin APIs + invoices | Licences bought vs used, and spending caps |
 

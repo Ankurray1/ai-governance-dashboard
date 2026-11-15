@@ -21,7 +21,7 @@ export const FEATURES = {
   shadowUse: { feature: 'Unapproved AI use', purpose: 'How many people use unapproved AI', sources: [SIGN_INS, EXPENSES] },
   alertsToReview: { feature: 'Data alerts to review', purpose: 'Alerts nobody has checked yet', sources: [PURVIEW] },
   departments: { feature: 'Spend vs budget by department', purpose: 'Which team spent it, and its budget', sources: [VENDOR_BILLING, HR, BUDGETS] },
-  shadowTools: { feature: 'Unapproved AI tools', purpose: 'Which tools, how we found them, what to use instead', sources: [SIGN_INS, CALENDAR, EXPENSES] },
+  shadowTools: { feature: 'Unapproved AI tools', purpose: 'Which tools, and how we found them', sources: [SIGN_INS, CALENDAR, EXPENSES] },
   alerts: { feature: 'Sensitive data alerts', purpose: 'What was shared, by whom, in which tool', sources: [PURVIEW, HR] },
   tools: { feature: 'Approved AI tools', purpose: 'Licences bought vs used, and spending caps', sources: [VENDOR_ADMIN, INVOICES] },
 } satisfies Record<string, Feature>;

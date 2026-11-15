@@ -3,17 +3,13 @@ import ToolLogo from './ToolLogo';
 import { View } from '../data/model';
 import { FEATURES } from '../data/sources';
 import { IconBadge } from './Icon';
-import Carousel from './Carousel';
 import FlipModal, { Why } from './FlipModal';
 
-const CATS = ['All', 'Text', 'Voice', 'Image', 'Video'] as const;
-type Cat = typeof CATS[number];
-
+// All unapproved tools in one ranked list: who uses it, how many, and how we found it.
 export default function ShadowAI({ view }: { view: View }) {
-  const [cat, setCat] = useState<Cat>('All');
   const [popup, setPopup] = useState(false);
   const { shadowRows, shadowPeople, scopeName } = view;
-  const rows = cat === 'All' ? shadowRows : shadowRows.filter((r) => r.cat === cat);
+  const max = Math.max(...shadowRows.map((r) => r.people), 1);
 
   return (
     <section id="shadow" className="card section grow-3" aria-label="Unapproved AI tools">
@@ -23,49 +19,38 @@ export default function ShadowAI({ view }: { view: View }) {
           Unapproved AI tools
           {scopeName !== 'Whole company' && <span className="sec-scope"> · {scopeName}</span>}
         </h2>
-        <div className="sec-actions">
-          <div className="seg-group" role="radiogroup" aria-label="Filter by type">
-            {CATS.map((c) => (
-              <button key={c} type="button" role="radio" aria-checked={cat === c} className={`seg-btn ${cat === c ? 'on' : ''}`} onClick={() => setCat(c)}>
-                {c}
-              </button>
-            ))}
-          </div>
-          <button type="button" className="info-btn" onClick={() => setPopup(true)} aria-label="What are unapproved AI tools?">
-            <span aria-hidden="true">i</span>
-          </button>
-        </div>
+        <button type="button" className="info-btn" onClick={() => setPopup(true)} aria-label="What are unapproved AI tools?">
+          <span aria-hidden="true">i</span>
+        </button>
       </div>
-      <p className="sec-sub">{shadowRows.length} tools · at least {shadowPeople} people, with how we found each one and what to use instead.</p>
+      <p className="sec-sub">At least <strong>{shadowPeople} people</strong> on {shadowRows.length} tools</p>
 
-      {rows.length === 0 ? (
-        <p className="caption empty">No {cat.toLowerCase()} tools found.</p>
+      {shadowRows.length === 0 ? (
+        <p className="caption empty">No unapproved tools found.</p>
       ) : (
-        <Carousel count={rows.length} noun="tool" perView={3}>
-          {rows.map((r) => (
-            <article key={r.name} className="mini-card shadow">
-              <div className="mc-top">
-                <span className="mc-id"><ToolLogo name={r.name} /><span className="mc-name">{r.name}<span className="mc-cat">{r.cat}</span></span></span>
-                <span className="mc-num">{r.people}<small> people</small></span>
-              </div>
-              <div className="mc-row"><span>Found via</span><strong>{r.found}</strong></div>
-              <div className="mc-row">
-                <span>Use instead</span>
-                <strong className={r.alt === 'None approved yet' ? 'muted' : 'ok'}>{r.alt}</strong>
-              </div>
-            </article>
+        <ul className="rank-list">
+          {shadowRows.map((r) => (
+            <li key={r.name} className="rank-row">
+              <ToolLogo name={r.name} size={30} />
+              <span className="rr-name">
+                <strong>{r.name}</strong>
+                <span>{r.cat} · {r.found}</span>
+              </span>
+              <span className="rr-bar"><span style={{ width: `${(r.people / max) * 100}%` }} /></span>
+              <span className="rr-num">{r.people}</span>
+            </li>
           ))}
-        </Carousel>
+        </ul>
       )}
 
       <FlipModal isOpen={popup} onClose={() => setPopup(false)} tone="orange" title="Unapproved AI tools" eyebrow="About this list" data={FEATURES.shadowTools}>
-        <p className="modal-text">AI tools employees use that the company hasn’t approved (“Shadow AI”), how we found them, and the approved tool to move people to.</p>
+        <p className="modal-text">AI tools employees use that the company hasn’t approved (“Shadow AI”), how many people use each, and how we found them.</p>
         <ul className="read-list">
           <li><span><strong>Work-email sign-up:</strong> someone registered with their work email</span></li>
           <li><span><strong>Work calendar connected:</strong> the tool was given access to a work calendar</span></li>
           <li><span><strong>Expense claim:</strong> someone paid for it and claimed it back</span></li>
         </ul>
-        <Why>Company information may be going into tools we have no contract with. Moving people to the approved tool removes the risk and often the extra cost.</Why>
+        <Why>Company information may be going into tools we have no contract with and have never checked for security.</Why>
       </FlipModal>
     </section>
   );
