@@ -21,6 +21,6 @@ export default function Icon({ name, size = 16 }: { name: keyof typeof PATHS | s
 }
 
 // Round icon badge used at the start of a card/section title
-export function IconBadge({ name }: { name: string }) {
-  return <span className="ico-badge"><Icon name={name} size={15} /></span>;
+export function IconBadge({ name, tone = 'blue' }: { name: string; tone?: 'blue' | 'orange' | 'red' }) {
+  return <span className={`ico-badge ${tone}`}><Icon name={name} size={16} /></span>;
 }

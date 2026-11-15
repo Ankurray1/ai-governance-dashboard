@@ -1,161 +1,96 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { LIMITS, Source } from '../data/sources';
 
-export interface ApiSourceItem {
-  name: string;
-  category: 'Direct API' | 'SSO / Identity' | 'Expense / ERP' | 'Security / DLP' | 'Finance Planning';
-  purpose: string;
-  howItWorks: string;
-  status: 'Ready (Standard API)' | 'Scheduled Sync' | 'Invoice Fallback';
-}
+// The "i" pop-up: what this shows, how it's worked out, where the data comes from,
+// and what we can't see. One short scroll, no tabs.
 
-interface FlipModalProps {
+export type Tone = 'blue' | 'orange' | 'red';
+
+interface Props {
   isOpen: boolean;
   onClose: () => void;
-  accent: string;
-  accentBg: string;
+  tone?: Tone;
   title: string;
   eyebrow?: string;
-  apiSources?: ApiSourceItem[];
+  sources: Source[];
   children: React.ReactNode;
 }
 
-export default function FlipModal({
-  isOpen,
-  onClose,
-  accent,
-  accentBg,
-  title,
-  eyebrow = 'About this metric',
-  apiSources,
-  children,
-}: FlipModalProps) {
-  const [activeTab, setActiveTab] = useState<'about' | 'api'>('about');
+export default function FlipModal({ isOpen, onClose, tone = 'blue', title, eyebrow = 'About this metric', sources, children }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const opener = useRef<Element | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
-    setActiveTab('about'); // reset tab on open
+    opener.current = document.activeElement;
     closeRef.current?.focus();
-    const origOverflow = document.body.style.overflow;
+    const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
-
     return () => {
       document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = origOverflow;
+      document.body.style.overflow = prev;
+      (opener.current as HTMLElement | null)?.focus?.();
     };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return createPortal(
-    <div
-      className="fp-backdrop"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label={title}
-    >
-      <div
-        className="fp-card"
-        onClick={(e) => e.stopPropagation()}
-        style={{ '--fp-accent': accent, '--fp-accent-bg': accentBg } as React.CSSProperties}
-      >
-        <div className="fp-bar" />
-        
-        {/* Header */}
-        <div className="fp-head">
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className={`modal tone-${tone}`} role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
+        <div className="modal-head">
           <div>
-            <span className="fp-eyebrow">{eyebrow}</span>
-            <h3 className="fp-title">{title}</h3>
+            <span className="modal-eyebrow">{eyebrow}</span>
+            <h3 className="modal-title">{title}</h3>
           </div>
-          <button ref={closeRef} className="fp-close" onClick={onClose} aria-label="Close">
-            ×
-          </button>
+          <button ref={closeRef} type="button" className="modal-close" onClick={onClose} aria-label="Close">×</button>
         </div>
 
-        {/* ── iOS-style Slider Tab inside the modal ── */}
-        {apiSources && apiSources.length > 0 && (
-          <div className="fp-tab-slider-wrap">
-            <div className="fp-tab-slider-track" role="tablist">
-              <button
-                type="button"
-                role="tab"
-                aria-selected={activeTab === 'about'}
-                className={`fp-tab-btn ${activeTab === 'about' ? 'on' : ''}`}
-                onClick={() => setActiveTab('about')}
-              >
-                About Metric
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={activeTab === 'api'}
-                className={`fp-tab-btn ${activeTab === 'api' ? 'on' : ''}`}
-                onClick={() => setActiveTab('api')}
-              >
-                Data Sources & APIs
-                <span className="fp-api-badge">{apiSources.length}</span>
-              </button>
-            </div>
-          </div>
-        )}
+        <div className="modal-body">
+          {children}
 
-        {/* Tab 1: About Body */}
-        {activeTab === 'about' && (
-          <div className="fp-tab-content">
-            {children}
-          </div>
-        )}
+          <div className="modal-label">Where the data comes from</div>
+          <ul className="src-list">
+            {sources.map((s) => (
+              <li key={s.name}>
+                <strong>{s.name}</strong>
+                <span>{s.gives}</span>
+              </li>
+            ))}
+          </ul>
 
-        {/* Tab 2: PM API & Data Source Plan */}
-        {activeTab === 'api' && apiSources && (
-          <div className="fp-tab-content fp-api-plan">
-            <div className="fp-section-label" style={{ padding: '0 24px', marginBottom: 4 }}>
-              PM Data Sourcing Architecture (Part 2)
-            </div>
-            <p className="fp-meaning" style={{ marginBottom: 12 }}>
-              To compute these numbers honestly without guesswork, here are the real-world APIs and enterprise connectors we pull from:
-            </p>
-
-            <div className="fp-api-list">
-              {apiSources.map((source) => (
-                <div key={source.name} className="fp-api-card">
-                  <div className="fp-api-card-top">
-                    <div>
-                      <strong className="fp-api-name">{source.name}</strong>
-                      <span className="fp-api-cat">{source.category}</span>
-                    </div>
-                    <span className={`pill ${source.status.includes('Ready') ? 'ok' : source.status.includes('Scheduled') ? 'near' : 'neutral'}`}>
-                      {source.status}
-                    </span>
-                  </div>
-                  <div className="fp-api-purpose">
-                    <strong>What we get:</strong> {source.purpose}
-                  </div>
-                  <div className="fp-api-how">
-                    <strong>Integration path:</strong> {source.howItWorks}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="fp-why" style={{ marginLeft: 24, marginTop: 12 }}>
-              <div className="fp-section-label">Honest Data Gaps & Caveats</div>
-              <p className="fp-meaning" style={{ fontSize: '12px' }}>
-                • <strong>Personal accounts on personal phones/laptops</strong> cannot be inspected via APIs; treated as policy/training scope.<br />
-                • <strong>Invoice lag:</strong> Vendor usage APIs update hourly to daily; tools without APIs (e.g. Midjourney) rely on finance billing upload.
-              </p>
-            </div>
-          </div>
-        )}
+          <div className="modal-label">What we can’t see</div>
+          <ul className="limits">
+            {LIMITS.map((l) => <li key={l}>{l}</li>)}
+          </ul>
+        </div>
       </div>
     </div>,
-    document.body
+    document.body,
+  );
+}
+
+// Small building blocks used inside the pop-ups
+export function Formula({ a, b, op, result }: { a: [string, string]; b: [string, string]; op: string; result: [string, string] }) {
+  return (
+    <div className="formula">
+      <div className="f-box"><strong>{a[0]}</strong><span>{a[1]}</span></div>
+      <span className="f-op" aria-hidden="true">{op}</span>
+      <div className="f-box"><strong>{b[0]}</strong><span>{b[1]}</span></div>
+      <span className="f-op" aria-hidden="true">=</span>
+      <div className="f-box f-result"><strong>{result[0]}</strong><span>{result[1]}</span></div>
+    </div>
+  );
+}
+
+export function Why({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="why">
+      <div className="modal-label">Why it matters</div>
+      <p>{children}</p>
+    </div>
   );
 }

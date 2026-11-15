@@ -8,7 +8,7 @@ export default function PageHeader() {
   return (
     <header className="topbar">
       <div>
-        <h1><strong>AI Governance</strong><br />Dashboard</h1>
+        <h1>AI Governance Dashboard</h1>
         <p className="muted">
           {employees} employees · {departments} departments
         </p>

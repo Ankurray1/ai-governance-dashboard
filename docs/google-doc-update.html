@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Doc update: Part 2</title>
+<style>
+  body { font-family: Arial, sans-serif; font-size: 11pt; color: #000; max-width: 820px; margin: 24px auto; padding: 0 16px; }
+  table { border-collapse: collapse; width: 100%; margin: 8px 0 10px; }
+  th, td { border: 1px solid #000; padding: 5px 7px; vertical-align: top; font-size: 11pt; text-align: left; }
+  th { font-weight: bold; text-align: center; }
+  td.n { text-align: center; width: 24px; }
+  p { margin: 6px 0; }
+</style>
+</head>
+<body>
+<div id="part2">
+<p>Below is the list of API and Data Sources based on each feature:</p>
+<table>
+  <tr><th></th><th>Feature</th><th>API &amp; Data Sources</th><th>Purpose</th></tr>
+  <tr><td class="n">1</td><td>AI spend vs budget</td><td>Vendor billing APIs (OpenAI, Anthropic, Microsoft) + invoices + budget set by Finance</td><td>How much we spent this month vs the budget</td></tr>
+  <tr><td class="n">2</td><td>AI adoption</td><td>Vendor admin APIs + HR system</td><td>Who used AI in the last 30 days</td></tr>
+  <tr><td class="n">3</td><td>Unapproved AI use</td><td>Sign-in logs (Okta / Microsoft Entra) + expense claims</td><td>How many people use unapproved AI</td></tr>
+  <tr><td class="n">4</td><td>Data alerts to review</td><td>Data-protection tool (Microsoft Purview)</td><td>Alerts nobody has checked yet</td></tr>
+  <tr><td class="n">5</td><td>Spend vs budget by department</td><td>Vendor billing APIs + HR system + budgets set by Finance</td><td>Which team spent it, and its budget</td></tr>
+  <tr><td class="n">6</td><td>Unapproved AI tools</td><td>Sign-in logs + work calendar access + expense claims</td><td>Which tools, how we found them, what to use instead</td></tr>
+  <tr><td class="n">7</td><td>Sensitive data alerts</td><td>Data-protection tool (Microsoft Purview) + HR system</td><td>What was shared, by whom, in which tool</td></tr>
+  <tr><td class="n">8</td><td>Approved AI tools</td><td>Vendor admin APIs + invoices</td><td>Licences bought vs used, and spending caps</td></tr>
+</table>
+<p><b>Note:</b> personal AI accounts on personal devices can’t be seen.</p>
+</div>
+</body>
+</html>

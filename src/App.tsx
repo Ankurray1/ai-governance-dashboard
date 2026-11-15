@@ -6,19 +6,24 @@ import Budgets from './components/Budgets';
 import ToolsTable from './components/ToolsTable';
 import ShadowAI from './components/ShadowAI';
 import DataAlerts from './components/DataAlerts';
-import People from './components/People';
 
 export default function App() {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
-
   const view = useMemo(() => compute(filters), [filters]);
-
   const update = (patch: Partial<Filters>) => setFilters((f) => ({ ...f, ...patch }));
+  const focused = filters.dept >= 0 || filters.tool >= 0;
 
   return (
     <div className="shell">
       <main id="overview" className="main">
         <PageHeader />
+        {focused && (
+          <div className="focus-bar" role="status">
+            Showing <strong>{view.scopeName}</strong>
+            {filters.tool >= 0 && <> · {DATA.tools[filters.tool].name} licence holders</>}
+            <button type="button" className="btn btn-sm" onClick={() => update({ dept: -1, tool: -1 })}>Show whole company</button>
+          </div>
+        )}
         <KpiRow view={view} />
         <Budgets view={view} filters={filters} onDept={(dept) => update({ dept: filters.dept === dept ? -1 : dept })} />
         <div className="row">
@@ -28,9 +33,8 @@ export default function App() {
         <ToolsTable view={view} filters={filters} onTool={(tool) => update({ tool: filters.tool === tool ? -1 : tool })} />
         <footer className="footnote">
           <p>
-            <strong>Where these numbers come from:</strong> AI vendors' bills and admin reports (spend, licences, last use) · the HR
-            system (people, teams, who has left) · sign-in records and expense claims (unapproved tools) · approved AI tools'
-            activity records (data alerts) · department budgets set by Finance.
+            <strong>Where the numbers come from:</strong> AI vendors’ admin &amp; billing APIs and invoices · HR system · company
+            sign-in system · expense claims · company data-protection tool · budgets set by Finance. Tap any “i” for details.
           </p>
           <p>
             Prototype with sample data: {DATA.employees.length.toLocaleString('en-US')} employees,{' '}

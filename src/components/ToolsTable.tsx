@@ -1,184 +1,79 @@
-import { useEffect, useRef, useState } from 'react';
-import { IconBadge } from './Icon';
+import { useState } from 'react';
 import { Filters, usd, View } from '../data/model';
-import FlipModal, { ApiSourceItem } from './FlipModal';
+import { SOURCES } from '../data/sources';
+import { IconBadge } from './Icon';
+import Carousel from './Carousel';
+import FlipModal, { Why } from './FlipModal';
 
 interface Props { view: View; filters: Filters; onTool: (i: number) => void }
 
-const TOOLS_API_SOURCES: ApiSourceItem[] = [
-  {
-    name: 'OpenAI Admin API',
-    category: 'Direct API',
-    purpose: 'Queries ChatGPT Enterprise active seats, last activity per licensed user, and total spend.',
-    howItWorks: 'REST GET `https://api.openai.com/v1/organization/users` and `/v1/organization/costs`.',
-    status: 'Ready (Standard API)',
-  },
-  {
-    name: 'Microsoft Graph Copilot Usage Reports API',
-    category: 'Direct API',
-    purpose: 'Retrieves Microsoft 365 Copilot user activity, active days, and license assignment.',
-    howItWorks: 'Call `reports/getOffice365ActiveUserDetail(period=\'D30\')` (refreshes daily with ~48h latency).',
-    status: 'Ready (Standard API)',
-  },
-  {
-    name: 'Anthropic Admin API',
-    category: 'Direct API',
-    purpose: 'Pulls Claude Enterprise seat utilization, token consumption, and monthly cost reports.',
-    howItWorks: 'Direct Admin API `/v1/organizations/{id}/usage_report` using Enterprise service token.',
-    status: 'Ready (Standard API)',
-  },
-  {
-    name: 'Voice/Video Consumption APIs (Synthesia, Runway, ElevenLabs)',
-    category: 'Direct API',
-    purpose: 'Tracks minute/video generation meters against the department usage caps.',
-    howItWorks: 'Usage query webhooks to monitor credits consumed before month-end.',
-    status: 'Ready (Standard API)',
-  },
-];
-
+// One compact card per approved tool, problems first. Each card shows the one limit that
+// matters for that tool: its spending cap (pay-per-use) or the licences we bought.
 export default function ToolsTable({ view, filters, onTool }: Props) {
   const [popup, setPopup] = useState(false);
   const rows = view.toolRows;
   const count = (tone: string) => rows.filter((r) => r.tone === tone).length;
   const summary = [
-    { tone: 'bad', n: count('bad'), label: 'limit reached' },
-    { tone: 'warn', n: count('warn'), label: 'need a look' },
+    { tone: 'over', n: count('bad'), label: 'limit reached' },
+    { tone: 'near', n: count('warn'), label: 'need a look' },
     { tone: 'ok', n: count('ok'), label: 'on track' },
-    { tone: 'muted', n: count('muted'), label: 'no usage data' },
+    { tone: 'neutral', n: count('muted'), label: 'no usage data' },
   ].filter((s) => s.n > 0);
-
-  // One-row slider: arrows move one card at a time
-  const track = useRef<HTMLDivElement>(null);
-  const [edge, setEdge] = useState({ left: false, right: true, first: 1, last: 1 });
-  const measure = () => {
-    const el = track.current;
-    if (!el) return;
-    const card = el.firstElementChild as HTMLElement | null;
-    const step = card ? card.offsetWidth + 12 : 1;
-    const first = Math.round(el.scrollLeft / step) + 1;
-    const fit = Math.max(1, Math.round((el.clientWidth + 12) / step));
-    setEdge({ left: el.scrollLeft > 2, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 2, first, last: Math.min(first + fit - 1, rows.length) });
-  };
-  useEffect(() => {
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, [rows.length]);
-  const slide = (dir: number) => {
-    const el = track.current;
-    const card = el?.firstElementChild as HTMLElement | null;
-    if (el && card) el.scrollBy({ left: dir * (card.offsetWidth + 12), behavior: 'smooth' });
-  };
 
   return (
     <section id="tools" className="card section" aria-label="Approved AI tools">
-      <div className="section-head" style={{ alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div className="sec-head">
+        <h2 className="sec-title">
           <IconBadge name="grid" />
-          <h2 className="sec-title" style={{ margin: 0, fontWeight: 600 }}>
-            Approved AI tools{view.scopeName === 'Whole company' ? '' : ` · ${view.scopeName}`}
-          </h2>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          Approved AI tools{view.scopeName === 'Whole company' ? '' : ` · ${view.scopeName}`}
+        </h2>
+        <div className="sec-actions">
           <div className="tool-summary">
-            {summary.map((s) => (
-              <span key={s.tone} className={`pill ${s.tone === 'bad' ? 'over' : s.tone === 'warn' ? 'near' : s.tone === 'ok' ? 'ok' : 'neutral'}`}>
-                {s.n} {s.label}
-              </span>
-            ))}
+            {summary.map((s) => <span key={s.tone} className={`pill ${s.tone}`}>{s.n} {s.label}</span>)}
           </div>
-
-          {/* Info Button */}
-          <button
-            type="button"
-            className="info-btn"
-            onClick={() => setPopup(true)}
-            aria-label="About approved tools & API sources"
-            title="About approved AI tools"
-          >
+          <button type="button" className="info-btn" onClick={() => setPopup(true)} aria-label="What are approved AI tools?">
             <span aria-hidden="true">i</span>
           </button>
         </div>
       </div>
+      <p className="sec-sub">Is each tool within its limit? Problems first.</p>
 
-      <div className="carousel">
-        <button type="button" className="car-arrow left" aria-label="Previous tool" disabled={!edge.left} onClick={() => slide(-1)}>‹</button>
-        <div className="tool-track" ref={track} onScroll={measure}>
+      <Carousel count={rows.length} noun="tool" perView={4}>
         {rows.map(({ ti, t, a, kind, status, tone, pct, capUsed }) => {
           const on = filters.tool === ti;
-          const barTone = tone === 'muted' ? 'muted-fill' : tone;
           return (
-            <button
-              key={t.name}
-              type="button"
-              className={`tool-card tone-${tone} ${on ? 'on' : ''}`}
-              onClick={() => onTool(ti)}
-              aria-pressed={on}
-            >
-              <span className="tool-top">
-                <span className="tool-name">{t.name}<span className="tool-cat">{t.cat}</span></span>
-                <span className={`tool-status ${tone}`}>{status}</span>
+            <button key={t.name} type="button" className={`mini-card tool tone-${tone} ${on ? 'on' : ''}`} onClick={() => onTool(ti)} aria-pressed={on}>
+              <span className="mc-top">
+                <span className="mc-name">{t.name}<span className="mc-cat">{t.cat}</span></span>
               </span>
-
-              <span className="tool-metric">
-                {kind === 'cap' && <>Spending cap: <strong>{usd(capUsed)}</strong> of {usd(t.usageLimit ?? 0)} used</>}
+              <span className={`status ${tone}`}>{status}</span>
+              <span className="mc-metric">
+                {kind === 'cap' && <>Spending cap: <strong>{usd(capUsed)}</strong> of {usd(t.usageLimit ?? 0)}</>}
                 {kind === 'seats' && <>Licences in use: <strong>{a.active}</strong> of {a.seats}</>}
                 {kind === 'invoice' && <>Licences bought: <strong>{a.seats}</strong> · use not reported</>}
               </span>
-              <span className="mini-meter">
-                <span className={`fill ${barTone}`} style={{ width: kind === 'invoice' ? '100%' : `${Math.min(pct, 100)}%` }} />
+              <span className="meter">
+                <span className={`fill ${tone === 'muted' ? 'muted-fill' : tone}`} style={{ width: kind === 'invoice' ? '100%' : `${Math.min(pct, 100)}%` }} />
               </span>
-
-              <span className="tool-foot">
+              <span className="mc-foot">
                 <strong>{usd(a.cost)}</strong> this month
-                {kind !== 'invoice' && a.unused > 0 && <> · {a.unused} unused {a.unused === 1 ? 'licence' : 'licences'}</>}
-                {a.leavers > 0 && <> · <span className="bad-text">{a.leavers} held by people who left</span></>}
+                {kind !== 'invoice' && a.unused > 0 && <> · {a.unused} unused</>}
+                {a.leavers > 0 && <> · <span className="bad-text">{a.leavers} held by leavers</span></>}
               </span>
             </button>
           );
         })}
-        </div>
-        <button type="button" className="car-arrow right" aria-label="Next tool" disabled={!edge.right} onClick={() => slide(1)}>›</button>
-      </div>
-      <p className="car-count muted small" aria-live="polite">Showing {edge.first}–{edge.last} of {rows.length} tools</p>
+      </Carousel>
 
-      {/* ── FlipModal Info Card with in-modal 'About' and 'Data Sources & APIs' slider ── */}
-      <FlipModal
-        isOpen={popup}
-        onClose={() => setPopup(false)}
-        accent="var(--blue)"
-        accentBg="var(--blue-bg)"
-        title="Approved AI tools"
-        eyebrow="About this section"
-        apiSources={TOOLS_API_SOURCES}
-      >
-        <p className="fp-meaning">
-          This carousel monitors every sanctioned AI tool paid for by the company, sorted with tools needing immediate management attention first (e.g. tools that have exceeded their spending cap or hold unused licences).
-        </p>
-
-        <div className="fp-section-label">Management signals tracked</div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '0 24px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, background: 'var(--panel)', borderRadius: 14, padding: '10px 14px' }}>
-            <strong style={{ fontSize: 13, color: 'var(--ink)' }}>Spending Caps (Usage-based AI)</strong>
-            <span style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
-              For video and voice AI (e.g. Synthesia, Runway, ElevenLabs) that bill per minute or credit. Alert triggers when close to month-end limits.
-            </span>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, background: 'var(--panel)', borderRadius: 14, padding: '10px 14px' }}>
-            <strong style={{ fontSize: 13, color: 'var(--ink)' }}>Licences in Use vs Bought (Seat Waste)</strong>
-            <span style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>
-              Identifies licences that haven't been active in 30 days or remain assigned to former employees who left the company.
-            </span>
-          </div>
-        </div>
-
-        <div className="fp-why" style={{ marginLeft: 24 }}>
-          <div className="fp-section-label">Vendor Telemetry Note</div>
-          <p className="fp-meaning">
-            Tools with direct telemetry APIs (ChatGPT Enterprise, Microsoft Copilot, Anthropic) report live user logins and token consumption. Tools without APIs (e.g. Midjourney) are entered as a manual seat configuration in Settings by Finance.
-          </p>
-        </div>
+      <FlipModal isOpen={popup} onClose={() => setPopup(false)} title="Approved AI tools" eyebrow="About this list" sources={SOURCES.tools}>
+        <p className="modal-text">Every AI tool the company pays for, each checked against its own limit. Tools that need attention come first.</p>
+        <ul className="read-list">
+          <li><span><strong>Spending cap:</strong> pay-per-use tools (video and voice) have a monthly cap. “Runs out before month-end” means it will hit the cap at today’s pace.</span></li>
+          <li><span><strong>Licences in use:</strong> people who used it in the last 30 days out of licences bought. Under 70% means “Underused”.</span></li>
+          <li><span><strong>Held by leavers:</strong> licences still assigned to people who have left. These can be cancelled now.</span></li>
+        </ul>
+        <Why>Unused licences and leavers’ licences are the quickest money to save. Caps stop pay-per-use bills from running away.</Why>
+        <p className="modal-note">Midjourney only sends a bill, so we show the licences bought, not who uses them.</p>
       </FlipModal>
     </section>
   );
